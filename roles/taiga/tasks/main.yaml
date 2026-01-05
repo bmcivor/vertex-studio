@@ -1,0 +1,30 @@
+---
+- name: Check if taiga directory exists
+  stat:
+    path: /opt/taiga
+  register: taiga_dir
+
+- name: Clone taiga-docker repository
+  git:
+    repo: https://github.com/taigaio/taiga-docker.git
+    dest: /opt/taiga
+    version: "6.9.0"
+  when: not taiga_dir.stat.exists
+
+- name: Template .env configuration
+  ansible.builtin.template:
+    src: env.j2
+    dest: /opt/taiga/.env
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: '0600'
+
+- name: Run database migrations
+  ansible.builtin.command:
+    cmd: docker compose -f docker-compose.yml -f docker-compose-inits.yml run --rm taiga-manage migrate
+    chdir: /opt/taiga
+
+- name: Start Taiga services
+  ansible.builtin.command:
+    cmd: docker compose up -d --force-recreate --remove-orphans
+    chdir: /opt/taiga
