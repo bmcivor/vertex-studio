@@ -31,6 +31,9 @@ inventory/group_vars/local.yaml
 *.swo
 *~
 
+# Docker
+.dockerignore
+
 # OS
 .DS_Store
 Thumbs.db
