@@ -4,6 +4,11 @@ The bootstrap playbook configures the base operating system for the lab machine.
 
 ## What It Does
 
+- Installs Docker CE:
+  - Adds Docker repository
+  - Installs docker-ce, docker-ce-cli, containerd.io, docker-buildx-plugin, docker-compose-plugin
+  - Enables and starts Docker service
+  - Adds user to docker group
 - Updates all system packages to latest versions
 - Installs developer tools: vim, git, curl, wget, htop, tmux, nano, tree
 - Sets hostname to `shadowlands`

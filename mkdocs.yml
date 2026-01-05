@@ -23,7 +23,6 @@ nav:
     - Configuration: setup/configuration.md
   - Playbooks:
     - Bootstrap: playbooks/bootstrap.md
-    - Docker: playbooks/docker.md
     - Taiga: playbooks/taiga.md
   - Operations:
     - Backup: operations/backup.md
