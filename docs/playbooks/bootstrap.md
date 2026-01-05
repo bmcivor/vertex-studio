@@ -34,13 +34,13 @@ To:
 ## Usage
 
 ```bash
-docker-compose run --rm ansible "ansible-playbook playbooks/bootstrap.yaml"
+make bootstrap
 ```
 
 For verbose output:
 
 ```bash
-docker-compose run --rm ansible "ansible-playbook playbooks/bootstrap.yaml -vv"
+make bootstrap-verbose
 ```
 
 ## Idempotence
