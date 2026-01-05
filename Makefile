@@ -1,4 +1,4 @@
-.PHONY: help build ping bootstrap bootstrap-verbose clean
+.PHONY: help build ping bootstrap bootstrap-verbose taiga clean
 
 help:
 	@echo "Available targets:"
@@ -6,6 +6,7 @@ help:
 	@echo "  make ping              - Test connection to lab machine"
 	@echo "  make bootstrap         - Run bootstrap playbook"
 	@echo "  make bootstrap-verbose - Run bootstrap playbook with verbose output"
+	@echo "  make taiga             - Deploy Taiga project management"
 	@echo "  make clean             - Remove Docker containers and images"
 
 build:
@@ -19,6 +20,9 @@ bootstrap:
 
 bootstrap-verbose:
 	docker-compose run --rm ansible "ansible-playbook playbooks/bootstrap.yaml -vv"
+
+taiga:
+	docker-compose run --rm ansible "ansible-playbook playbooks/taiga.yaml"
 
 clean:
 	@if docker-compose ps -q 2>/dev/null | grep -q .; then \

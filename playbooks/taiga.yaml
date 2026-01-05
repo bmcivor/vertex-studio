@@ -1,0 +1,6 @@
+---
+- name: Deploy Taiga
+  hosts: all
+  become: true
+  roles:
+    - taiga
