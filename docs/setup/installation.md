@@ -34,7 +34,7 @@ On your dev machine:
 
 ```bash
 # Generate SSH key if you don't have one
-ssh-keygen -t ed25519 -C "your_email@example.com"
+ssh-keygen -t ed25519
 
 # Copy key to lab machine
 ssh-copy-id username@lab-ip
@@ -43,16 +43,27 @@ ssh-copy-id username@lab-ip
 ssh username@lab-ip
 ```
 
-## Dev Machine Setup
+### 4. Configure Passwordless Sudo
 
-### Install Ansible
-
-On Fedora:
+Ansible requires passwordless sudo to run playbooks. On the lab machine:
 
 ```bash
-sudo dnf install -y ansible-core
-ansible --version
+sudo visudo
 ```
+
+Change:
+```
+%wheel  ALL=(ALL)       ALL
+```
+
+To:
+```
+%wheel  ALL=(ALL)       NOPASSWD: ALL
+```
+
+Save and exit. Changes take effect immediately.
+
+## Dev Machine Setup
 
 ### Clone Repository
 
@@ -67,10 +78,16 @@ Edit `inventory/lab.yaml` and update:
 - `ansible_host`: actual lab machine IP
 - `ansible_user`: username you created during Fedora install
 
+### Build Ansible Container
+
+```bash
+docker-compose build
+```
+
 ### Test Ansible Connection
 
 ```bash
-ansible all -m ping
+docker-compose run --rm ansible "ansible all -m ping"
 ```
 
 Expected output:
