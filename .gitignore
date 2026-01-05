@@ -1,0 +1,36 @@
+# Ansible
+*.retry
+.ansible/
+ansible.log
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# MkDocs
+site/
+
+# Secrets and local config
+secrets.yaml
+*.pem
+*.key
+!roles/**/files/*.key
+inventory/host_vars/labserver.yaml
+inventory/group_vars/local.yaml
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
