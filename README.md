@@ -33,13 +33,14 @@ A self-hosted development platform featuring project management, CI/CD, and LLM 
 3. **Deploy platform**
 
    ```bash
-   # Full deployment
-   ansible-playbook site.yaml
+   # Build Ansible container
+   make build
 
-   # Or step-by-step
-   ansible-playbook playbooks/bootstrap.yaml
-   ansible-playbook playbooks/docker.yaml
-   ansible-playbook playbooks/taiga.yaml
+   # Test connection
+   make ping
+
+   # Run bootstrap
+   make bootstrap
    ```
 
 ## Documentation

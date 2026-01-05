@@ -81,13 +81,21 @@ Edit `inventory/lab.yaml` and update:
 ### Build Ansible Container
 
 ```bash
+<<<<<<< HEAD
 docker-compose build
+=======
+make build
+>>>>>>> 922b3b3 (feat: add in bootstrap process for lab machine)
 ```
 
 ### Test Ansible Connection
 
 ```bash
+<<<<<<< HEAD
 docker-compose run --rm ansible "ansible all -m ping"
+=======
+make ping
+>>>>>>> 922b3b3 (feat: add in bootstrap process for lab machine)
 ```
 
 Expected output:
