@@ -3,6 +3,9 @@
   hosts: all
   become: true
   
+  roles:
+    - docker
+  
   tasks:
     - name: Update all packages
       dnf:
