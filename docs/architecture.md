@@ -10,13 +10,13 @@ Vertex Studio is a self-hosted development platform designed to provide a comple
 
 - **Ansible**: Infrastructure as code for reproducible deployments
 - **Docker**: Container runtime for all services
-- **Traefik** (future): Reverse proxy with automatic TLS
+- **Traefik** (planned): Reverse proxy with automatic TLS
 
 ### Development Layer
 
-- **GitLab** (future): Self-hosted Git with integrated CI/CD
+- **GitLab** (planned): Self-hosted Git with integrated CI/CD
 - **Taiga**: Project management and issue tracking
-- **Local LLM** (future): Development assistance using 3090 GPU
+- **Local LLM** (planned): Development assistance using 3090 GPU
 
 ## Network Architecture
 
@@ -28,9 +28,9 @@ Internet
         └─> Lab Server (Fedora Server)
               │
               ├─> Taiga (port 9000)
-              ├─> MkDocs (port 8000)
-              ├─> GitLab (port 8080) - future
-              └─> Local LLM (port 11434) - future
+              ├─> MkDocs (port 8080)
+              ├─> GitLab (port 8080) - planned
+              └─> Local LLM (port 11434) - planned
 ```
 
 ## Design Decisions

@@ -74,28 +74,26 @@ cd vertex-studio
 
 ### Configure Inventory
 
-Edit `inventory/lab.yaml` and update:
+Copy and edit the host variables file:
+
+```bash
+cp inventory/host_vars/labserver.yaml.example inventory/host_vars/labserver.yaml
+```
+
+Update `inventory/host_vars/labserver.yaml` with:
 - `ansible_host`: actual lab machine IP
 - `ansible_user`: username you created during Fedora install
 
 ### Build Ansible Container
 
 ```bash
-<<<<<<< HEAD
-docker-compose build
-=======
 make build
->>>>>>> 922b3b3 (feat: add in bootstrap process for lab machine)
 ```
 
 ### Test Ansible Connection
 
 ```bash
-<<<<<<< HEAD
-docker-compose run --rm ansible "ansible all -m ping"
-=======
 make ping
->>>>>>> 922b3b3 (feat: add in bootstrap process for lab machine)
 ```
 
 Expected output:
