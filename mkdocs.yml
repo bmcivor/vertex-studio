@@ -24,6 +24,7 @@ nav:
   - Playbooks:
     - Bootstrap: playbooks/bootstrap.md
     - Taiga: playbooks/taiga.md
+    - MkDocs: playbooks/mkdocs.md
   - Workflow:
     - Ticket Standards: workflow/tickets.md
   - Operations:

@@ -1,4 +1,4 @@
-.PHONY: help build ping bootstrap bootstrap-verbose taiga clean
+.PHONY: help build ping bootstrap bootstrap-verbose taiga mkdocs clean
 
 help:
 	@echo "Available targets:"
@@ -7,6 +7,7 @@ help:
 	@echo "  make bootstrap         - Run bootstrap playbook"
 	@echo "  make bootstrap-verbose - Run bootstrap playbook with verbose output"
 	@echo "  make taiga             - Deploy Taiga project management"
+	@echo "  make mkdocs            - Deploy MkDocs documentation"
 	@echo "  make clean             - Remove Docker containers and images"
 
 build:
@@ -23,6 +24,9 @@ bootstrap-verbose:
 
 taiga:
 	docker-compose run --rm ansible "ansible-playbook playbooks/taiga.yaml"
+
+mkdocs:
+	docker-compose run --rm ansible "ansible-playbook playbooks/mkdocs.yaml"
 
 clean:
 	@if docker-compose ps -q 2>/dev/null | grep -q .; then \

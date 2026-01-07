@@ -1,0 +1,46 @@
+---
+- name: Create mkdocs directory
+  ansible.builtin.file:
+    path: /opt/mkdocs
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: '0755'
+
+- name: Sync docs directory
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../docs/"
+    dest: /opt/mkdocs/docs/
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: '0644'
+    directory_mode: '0755'
+
+- name: Copy mkdocs.yml
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../mkdocs.yml"
+    dest: /opt/mkdocs/mkdocs.yml
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: '0644'
+
+- name: Copy Dockerfile
+  ansible.builtin.copy:
+    src: Dockerfile
+    dest: /opt/mkdocs/Dockerfile
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: '0644'
+
+- name: Copy docker-compose.yaml
+  ansible.builtin.copy:
+    src: docker-compose.yaml
+    dest: /opt/mkdocs/docker-compose.yaml
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: '0644'
+
+- name: Build and start MkDocs
+  ansible.builtin.command:
+    cmd: docker compose up -d --build --force-recreate
+    chdir: /opt/mkdocs

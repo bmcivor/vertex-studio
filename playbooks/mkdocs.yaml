@@ -1,0 +1,6 @@
+---
+- name: Deploy MkDocs documentation
+  hosts: labserver
+  become: true
+  roles:
+    - mkdocs
