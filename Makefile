@@ -1,4 +1,4 @@
-.PHONY: help build ping bootstrap bootstrap-verbose taiga mkdocs clean
+.PHONY: help check-docker build ping bootstrap bootstrap-verbose taiga mkdocs clean
 
 help:
 	@echo "Available targets:"
@@ -10,22 +10,25 @@ help:
 	@echo "  make mkdocs            - Deploy MkDocs documentation"
 	@echo "  make clean             - Remove Docker containers and images"
 
-build:
+check-docker:
+	@docker info > /dev/null 2>&1 || (echo "Docker is not running. Please start Docker and try again." && exit 1)
+
+build: check-docker
 	docker-compose build
 
-ping:
+ping: check-docker
 	docker-compose run --rm ansible "ansible all -m ping"
 
-bootstrap:
+bootstrap: check-docker
 	docker-compose run --rm ansible "ansible-playbook playbooks/bootstrap.yaml"
 
-bootstrap-verbose:
+bootstrap-verbose: check-docker
 	docker-compose run --rm ansible "ansible-playbook playbooks/bootstrap.yaml -vv"
 
-taiga:
+taiga: check-docker
 	docker-compose run --rm ansible "ansible-playbook playbooks/taiga.yaml"
 
-mkdocs:
+mkdocs: check-docker
 	docker-compose run --rm ansible "ansible-playbook playbooks/mkdocs.yaml"
 
 clean:
