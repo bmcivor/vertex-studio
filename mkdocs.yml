@@ -22,6 +22,7 @@ nav:
     - Installation: setup/installation.md
     - Configuration: setup/configuration.md
   - Playbooks:
+    - Lab: playbooks/lab.md
     - Bootstrap: playbooks/bootstrap.md
     - Taiga: playbooks/taiga.md
     - MkDocs: playbooks/mkdocs.md
