@@ -1,4 +1,4 @@
-.PHONY: help check-docker build ping bootstrap bootstrap-verbose taiga mkdocs clean
+.PHONY: help check-docker build ping bootstrap bootstrap-verbose lab taiga mkdocs clean
 
 help:
 	@echo "Available targets:"
@@ -6,6 +6,7 @@ help:
 	@echo "  make ping              - Test connection to lab machine"
 	@echo "  make bootstrap         - Run bootstrap playbook"
 	@echo "  make bootstrap-verbose - Run bootstrap playbook with verbose output"
+	@echo "  make lab               - Deploy complete platform (bootstrap + all apps)"
 	@echo "  make taiga             - Deploy Taiga project management"
 	@echo "  make mkdocs            - Deploy MkDocs documentation"
 	@echo "  make clean             - Remove Docker containers and images"
@@ -24,6 +25,9 @@ bootstrap: check-docker
 
 bootstrap-verbose: check-docker
 	docker-compose run --rm ansible "ansible-playbook playbooks/bootstrap.yaml -vv"
+
+lab: check-docker
+	docker-compose run --rm ansible "ansible-playbook playbooks/lab.yaml"
 
 taiga: check-docker
 	docker-compose run --rm ansible "ansible-playbook playbooks/taiga.yaml"
