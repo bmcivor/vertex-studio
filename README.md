@@ -59,6 +59,7 @@ make build            # Build Ansible Docker container
 make ping             # Test connection to lab machine
 make bootstrap        # Run bootstrap playbook
 make bootstrap-verbose # Run bootstrap with verbose output
+make lab              # Deploy complete platform (bootstrap + all apps)
 make taiga            # Deploy Taiga project management
 make mkdocs           # Deploy MkDocs documentation
 make clean            # Remove Docker containers and images
