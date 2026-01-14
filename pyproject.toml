@@ -1,0 +1,4 @@
+[project]
+name = "vertex-studio"
+version = "0.1.0"
+description = "Self-hosted development platform deployed via Ansible"
