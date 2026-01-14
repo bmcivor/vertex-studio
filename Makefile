@@ -1,4 +1,4 @@
-.PHONY: help check-docker build ping bootstrap bootstrap-verbose lab taiga mkdocs clean
+.PHONY: help check-docker build ping bootstrap bootstrap-verbose lab taiga mkdocs clean bump-patch bump-minor bump-major
 
 help:
 	@echo "Available targets:"
@@ -10,6 +10,9 @@ help:
 	@echo "  make taiga             - Deploy Taiga project management"
 	@echo "  make mkdocs            - Deploy MkDocs documentation"
 	@echo "  make clean             - Remove Docker containers and images"
+	@echo "  make bump-patch        - Bump patch version (0.1.0 -> 0.1.1)"
+	@echo "  make bump-minor        - Bump minor version (0.1.0 -> 0.2.0)"
+	@echo "  make bump-major        - Bump major version (0.1.0 -> 1.0.0)"
 
 check-docker:
 	@docker info > /dev/null 2>&1 || (echo "Docker is not running. Please start Docker and try again." && exit 1)
@@ -42,3 +45,12 @@ clean:
 	else \
 		echo "No containers to clean" >&2; \
 	fi
+
+bump-patch:
+	bump2version patch
+
+bump-minor:
+	bump2version minor
+
+bump-major:
+	bump2version major

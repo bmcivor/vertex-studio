@@ -29,6 +29,7 @@ nav:
   - Workflow:
     - Ticket Standards: workflow/tickets.md
   - Operations:
+    - Versioning: operations/versioning.md
     - Backup: operations/backup.md
     - Troubleshooting: operations/troubleshooting.md
 
