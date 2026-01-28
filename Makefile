@@ -1,4 +1,4 @@
-.PHONY: help check-docker build ping bootstrap bootstrap-verbose lab taiga mkdocs clean bump-patch bump-minor bump-major
+.PHONY: help check-docker build ping bootstrap bootstrap-verbose lab taiga mkdocs tailscale clean bump-patch bump-minor bump-major
 
 help:
 	@echo "Available targets:"
@@ -9,6 +9,7 @@ help:
 	@echo "  make lab               - Deploy complete platform (bootstrap + all apps)"
 	@echo "  make taiga             - Deploy Taiga project management"
 	@echo "  make mkdocs            - Deploy MkDocs documentation"
+	@echo "  make tailscale         - Install Tailscale VPN"
 	@echo "  make clean             - Remove Docker containers and images"
 	@echo "  make bump-patch        - Bump patch version (0.1.0 -> 0.1.1)"
 	@echo "  make bump-minor        - Bump minor version (0.1.0 -> 0.2.0)"
@@ -37,6 +38,9 @@ taiga: check-docker
 
 mkdocs: check-docker
 	docker-compose run --rm ansible "ansible-playbook playbooks/mkdocs.yaml"
+
+tailscale: check-docker
+	docker-compose run --rm ansible "ansible-playbook playbooks/tailscale.yaml"
 
 clean:
 	@if docker-compose ps -q 2>/dev/null | grep -q .; then \
