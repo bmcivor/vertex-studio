@@ -1,4 +1,4 @@
-.PHONY: help check-docker build ping bootstrap bootstrap-verbose lab taiga mkdocs tailscale clean bump-patch bump-minor bump-major
+.PHONY: help check-docker build ping bootstrap bootstrap-verbose lab taiga mkdocs tailscale nvidia ollama clean bump-patch bump-minor bump-major
 
 help:
 	@echo "Available targets:"
@@ -10,6 +10,8 @@ help:
 	@echo "  make taiga             - Deploy Taiga project management"
 	@echo "  make mkdocs            - Deploy MkDocs documentation"
 	@echo "  make tailscale         - Install Tailscale VPN"
+	@echo "  make nvidia            - Install NVIDIA drivers and CUDA"
+	@echo "  make ollama            - Install Ollama and pull LLaVA model"
 	@echo "  make clean             - Remove Docker containers and images"
 	@echo "  make bump-patch        - Bump patch version (0.1.0 -> 0.1.1)"
 	@echo "  make bump-minor        - Bump minor version (0.1.0 -> 0.2.0)"
@@ -41,6 +43,12 @@ mkdocs: check-docker
 
 tailscale: check-docker
 	docker-compose run --rm ansible "ansible-playbook playbooks/tailscale.yaml"
+
+nvidia: check-docker
+	docker-compose run --rm ansible "ansible-playbook playbooks/nvidia.yaml"
+
+ollama: check-docker
+	docker-compose run --rm ansible "ansible-playbook playbooks/ollama.yaml"
 
 clean:
 	@if docker-compose ps -q 2>/dev/null | grep -q .; then \

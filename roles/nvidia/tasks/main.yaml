@@ -1,0 +1,61 @@
+---
+- name: Remove NVIDIA official packages if present
+  shell: dnf remove -y 'nvidia-*' 2>/dev/null || true
+  changed_when: true
+
+- name: Remove NVIDIA official repo if present
+  file:
+    path: /etc/yum.repos.d/cuda-fedora42.repo
+    state: absent
+
+- name: Install RPM Fusion free repository
+  dnf:
+    name: "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_facts['distribution_major_version'] }}.noarch.rpm"
+    state: present
+    disable_gpg_check: true
+
+- name: Install RPM Fusion nonfree repository
+  dnf:
+    name: "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_facts['distribution_major_version'] }}.noarch.rpm"
+    state: present
+    disable_gpg_check: true
+
+- name: Update system
+  dnf:
+    name: '*'
+    state: latest
+
+- name: Install NVIDIA drivers and dependencies
+  dnf:
+    name:
+      - kernel-devel-matched
+      - kernel-headers
+      - akmod-nvidia
+      - xorg-x11-drv-nvidia-cuda
+    state: present
+
+- name: Generate MOK signing key for akmods
+  command: kmodgenca -a
+  args:
+    creates: /etc/pki/akmods/certs/public_key.der
+
+- name: Check if MOK key is already enrolled
+  command: mokutil --test-key /etc/pki/akmods/certs/public_key.der
+  register: mok_test
+  changed_when: false
+  failed_when: false
+
+- name: Import MOK key (will prompt for password on next boot)
+  command: mokutil --import /etc/pki/akmods/certs/public_key.der --password "{{ mok_password | default('nvidia') }}"
+  when: mok_test.rc != 0
+  register: mok_import
+
+- name: Build NVIDIA kernel module
+  command: akmods --force
+  when: mok_test.rc == 0
+  changed_when: true
+
+- name: Notify about MOK enrollment
+  debug:
+    msg: "MOK key imported. On next reboot, enroll the key in MOK manager using password: {{ mok_password | default('nvidia') }}"
+  when: mok_import is defined and mok_import.changed
