@@ -2,6 +2,9 @@
 - name: Deploy complete Vertex Studio platform
   ansible.builtin.import_playbook: bootstrap.yaml
 
+- name: Install Tailscale
+  ansible.builtin.import_playbook: tailscale.yaml
+
 - name: Deploy Taiga
   ansible.builtin.import_playbook: taiga.yaml
 

@@ -1,0 +1,16 @@
+---
+- name: Add Tailscale repository
+  command: dnf config-manager addrepo --from-repofile=https://pkgs.tailscale.com/stable/fedora/tailscale.repo
+  args:
+    creates: /etc/yum.repos.d/tailscale.repo
+
+- name: Install Tailscale
+  dnf:
+    name: tailscale
+    state: present
+
+- name: Enable and start tailscaled service
+  systemd:
+    name: tailscaled
+    enabled: true
+    state: started

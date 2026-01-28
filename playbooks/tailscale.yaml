@@ -1,0 +1,6 @@
+---
+- name: Install Tailscale
+  hosts: labserver
+  become: true
+  roles:
+    - tailscale
