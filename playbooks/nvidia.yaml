@@ -1,0 +1,6 @@
+---
+- name: Install NVIDIA Drivers
+  hosts: labserver
+  become: true
+  roles:
+    - nvidia
