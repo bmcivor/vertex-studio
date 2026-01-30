@@ -15,6 +15,8 @@ help:
 	@echo "  make stable-diffusion  - Deploy Stable Diffusion WebUI with SDXL"
 	@echo "  make ollama            - Install Ollama and pull LLaVA model"
 	@echo "  make clean             - Remove Docker containers and images"
+	@echo "  make reboot            - Reboot the lab machine"
+	@echo "  make shutdown          - Shutdown the lab machine"
 	@echo "  make bump-patch        - Bump patch version (0.1.0 -> 0.1.1)"
 	@echo "  make bump-minor        - Bump minor version (0.1.0 -> 0.2.0)"
 	@echo "  make bump-major        - Bump major version (0.1.0 -> 1.0.0)"
@@ -65,6 +67,12 @@ clean:
 	else \
 		echo "No containers to clean" >&2; \
 	fi
+
+reboot: check-docker
+	docker-compose run --rm ansible "ansible-playbook playbooks/power.yaml -e power_state=reboot"
+
+shutdown: check-docker
+	docker-compose run --rm ansible "ansible-playbook playbooks/power.yaml -e power_state=shutdown"
 
 bump-patch:
 	bump2version patch
