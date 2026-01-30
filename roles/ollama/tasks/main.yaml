@@ -1,0 +1,22 @@
+---
+- name: Check if Ollama is installed
+  stat:
+    path: /usr/local/bin/ollama
+  register: ollama_binary
+
+- name: Download and install Ollama
+  shell: curl -fsSL https://ollama.com/install.sh | sh
+  args:
+    creates: /usr/local/bin/ollama
+  when: not ollama_binary.stat.exists
+
+- name: Enable and start Ollama service
+  systemd:
+    name: ollama
+    enabled: true
+    state: started
+
+- name: Pull LLaVA model
+  command: ollama pull llava
+  register: pull_result
+  changed_when: "'pulling' in pull_result.stdout"

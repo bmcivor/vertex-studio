@@ -1,0 +1,6 @@
+---
+- name: Deploy Stable Diffusion WebUI
+  hosts: labserver
+  become: true
+  roles:
+    - stable-diffusion

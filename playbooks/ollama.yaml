@@ -1,0 +1,6 @@
+---
+- name: Install Ollama and LLM
+  hosts: labserver
+  become: true
+  roles:
+    - ollama

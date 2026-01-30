@@ -1,0 +1,6 @@
+---
+- name: Install NVIDIA Container Toolkit
+  hosts: labserver
+  become: true
+  roles:
+    - nvidia-container

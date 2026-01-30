@@ -5,6 +5,18 @@
 - name: Install Tailscale
   ansible.builtin.import_playbook: tailscale.yaml
 
+- name: Install NVIDIA drivers
+  ansible.builtin.import_playbook: nvidia.yaml
+
+- name: Install NVIDIA Container Toolkit
+  ansible.builtin.import_playbook: nvidia-container.yaml
+
+- name: Deploy Stable Diffusion WebUI
+  ansible.builtin.import_playbook: stable-diffusion.yaml
+
+- name: Install Ollama LLM
+  ansible.builtin.import_playbook: ollama.yaml
+
 - name: Deploy Taiga
   ansible.builtin.import_playbook: taiga.yaml
 
