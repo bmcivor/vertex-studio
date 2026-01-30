@@ -1,0 +1,19 @@
+---
+- name: Power management
+  hosts: all
+  become: true
+  tasks:
+    - name: Validate power_state
+      ansible.builtin.fail:
+        msg: "Must specify power_state: reboot or shutdown"
+      when: power_state is not defined or power_state not in ['reboot', 'shutdown']
+
+    - name: Reboot machine
+      ansible.builtin.reboot:
+        msg: "Rebooting machine"
+      when: power_state == 'reboot'
+
+    - name: Shutdown machine
+      community.general.shutdown:
+        msg: "Shutting down machine"
+      when: power_state == 'shutdown'
