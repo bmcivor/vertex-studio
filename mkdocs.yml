@@ -28,6 +28,8 @@ nav:
     - MkDocs: playbooks/mkdocs.md
     - Tailscale: playbooks/tailscale.md
     - NVIDIA: playbooks/nvidia.md
+    - NVIDIA Container: playbooks/nvidia-container.md
+    - Stable Diffusion: playbooks/stable-diffusion.md
     - Ollama: playbooks/ollama.md
   - Workflow:
     - Ticket Standards: workflow/tickets.md

@@ -1,0 +1,12 @@
+---
+- name: Clone stable-diffusion-webui-docker repository
+  ansible.builtin.git:
+    repo: https://github.com/simonmcnair/stable-diffusion-webui-docker.git
+    dest: /opt/stable-diffusion
+    version: master
+
+- name: Start Stable Diffusion WebUI (AUTOMATIC1111)
+  ansible.builtin.shell:
+    cmd: docker compose --profile auto up -d --build
+    chdir: /opt/stable-diffusion
+  changed_when: true

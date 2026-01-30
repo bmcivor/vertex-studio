@@ -1,4 +1,4 @@
-.PHONY: help check-docker build ping bootstrap bootstrap-verbose lab taiga mkdocs tailscale nvidia ollama clean bump-patch bump-minor bump-major
+.PHONY: help check-docker build ping bootstrap bootstrap-verbose lab taiga mkdocs tailscale nvidia nvidia-container stable-diffusion ollama clean bump-patch bump-minor bump-major
 
 help:
 	@echo "Available targets:"
@@ -11,6 +11,8 @@ help:
 	@echo "  make mkdocs            - Deploy MkDocs documentation"
 	@echo "  make tailscale         - Install Tailscale VPN"
 	@echo "  make nvidia            - Install NVIDIA drivers and CUDA"
+	@echo "  make nvidia-container  - Install NVIDIA container toolkit for Docker GPU"
+	@echo "  make stable-diffusion  - Deploy Stable Diffusion WebUI with SDXL"
 	@echo "  make ollama            - Install Ollama and pull LLaVA model"
 	@echo "  make clean             - Remove Docker containers and images"
 	@echo "  make bump-patch        - Bump patch version (0.1.0 -> 0.1.1)"
@@ -46,6 +48,12 @@ tailscale: check-docker
 
 nvidia: check-docker
 	docker-compose run --rm ansible "ansible-playbook playbooks/nvidia.yaml"
+
+nvidia-container: check-docker
+	docker-compose run --rm ansible "ansible-playbook playbooks/nvidia-container.yaml"
+
+stable-diffusion: check-docker
+	docker-compose run --rm ansible "ansible-playbook playbooks/stable-diffusion.yaml"
 
 ollama: check-docker
 	docker-compose run --rm ansible "ansible-playbook playbooks/ollama.yaml"
