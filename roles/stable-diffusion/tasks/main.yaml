@@ -10,3 +10,27 @@
     cmd: docker compose --profile auto up -d --build
     chdir: /opt/stable-diffusion
   changed_when: true
+
+- name: Ensure output directory is readable
+  ansible.builtin.file:
+    path: /opt/stable-diffusion/output
+    mode: '0755'
+  become: true
+
+- name: Copy gallery nginx config
+  ansible.builtin.copy:
+    src: gallery.conf
+    dest: /opt/stable-diffusion/gallery.conf
+    mode: '0644'
+
+- name: Copy gallery compose file
+  ansible.builtin.copy:
+    src: gallery-compose.yaml
+    dest: /opt/stable-diffusion/gallery-compose.yaml
+    mode: '0644'
+
+- name: Start gallery nginx
+  ansible.builtin.command:
+    cmd: docker compose -f gallery-compose.yaml up -d
+    chdir: /opt/stable-diffusion
+  changed_when: true
