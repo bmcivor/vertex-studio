@@ -1,0 +1,10 @@
+services:
+  gallery:
+    image: nginx:alpine
+    container_name: sd-gallery
+    ports:
+      - "8081:80"
+    volumes:
+      - /opt/stable-diffusion/output:/output:ro
+      - /opt/stable-diffusion/gallery.conf:/etc/nginx/conf.d/default.conf:ro
+    restart: unless-stopped

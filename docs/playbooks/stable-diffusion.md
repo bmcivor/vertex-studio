@@ -61,6 +61,10 @@ cd /opt/stable-diffusion && docker compose --profile auto restart
 
 Generated images are saved to `/opt/stable-diffusion/output/`.
 
+## Output Gallery
+
+Browse generated files at `http://shadowlands:8081`. The playbook deploys an nginx container serving the output directory with directory listing enabled.
+
 ## Prerequisites
 
 - NVIDIA drivers (`make nvidia`)
