@@ -46,7 +46,7 @@ make taiga
 
 Once deployed, Taiga is accessible at:
 
-**http://192.168.20.15:9000**
+**http://shadowlands:9000**
 
 Default credentials need to be created manually (see Post-Deployment section).
 
@@ -57,7 +57,7 @@ Default credentials need to be created manually (see Post-Deployment section).
 After first deployment, create an admin user:
 
 ```bash
-ssh lab-owner@192.168.20.15
+ssh lab-owner@shadowlands
 cd /opt/taiga
 ./taiga-manage.sh createsuperuser
 ```
@@ -80,7 +80,7 @@ The playbook is idempotent with some caveats:
 If you see a 502 error, check container status:
 
 ```bash
-ssh lab-owner@192.168.20.15 'docker ps --filter name=taiga'
+ssh shadowlands 'docker ps --filter name=taiga'
 ```
 
 All containers should show status "Up". If gateway shows "Up" but others are restarting, check logs:

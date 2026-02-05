@@ -22,4 +22,4 @@ make mkdocs
 
 ## Access
 
-http://192.168.20.15:8080
+http://shadowlands:8080

@@ -19,7 +19,7 @@ make tailscale
 After the playbook completes, SSH into the lab machine and authenticate:
 
 ```bash
-ssh lab-owner@192.168.20.15
+ssh lab-owner@shadowlands
 sudo tailscale up
 ```
 

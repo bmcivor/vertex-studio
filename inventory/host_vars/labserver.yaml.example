@@ -1,0 +1,5 @@
+# Host-specific variables for labserver
+# Copy this file to labserver.yaml and update with your actual values
+
+ansible_host: shadowlands  # Your lab machine Tailscale hostname
+ansible_user: username     # Your username on the lab machine
