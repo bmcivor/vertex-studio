@@ -17,26 +17,42 @@ A self-hosted development platform featuring project management, CI/CD, and LLM 
 - Lab machine with Fedora Server installed
 - Dev machine with Docker and Docker Compose
 - SSH key-based authentication configured between machines
+- Optional: Tailscale VPN for remote access
 
 ### Initial Setup
 
-1. **Configure inventory**
+1. **Copy SSH key to lab machine**
+
+   Before Ansible can connect, you need SSH key authentication configured:
+
+   ```bash
+   # Generate SSH key if you don't have one
+   ssh-keygen -t ed25519
+   
+   # Copy key to lab machine
+   ssh-copy-id lab-owner@shadowlands
+   
+   # Test connection
+   ssh lab-owner@shadowlands
+   ```
+
+2. **Configure inventory**
 
    Copy and edit the host variables:
 
    ```bash
    cp inventory/host_vars/labserver.yaml.example inventory/host_vars/labserver.yaml
-   # Edit with your lab machine's IP and username
+   # Edit with your lab machine's hostname and username
    ```
 
-2. **Build and test**
+3. **Build and test**
 
    ```bash
    make build      # Build Ansible container
    make ping       # Test connection to lab machine
    ```
 
-3. **Deploy platform**
+4. **Deploy platform**
 
    ```bash
    make bootstrap  # Initial server setup (packages, Docker, SSH hardening)
@@ -48,8 +64,8 @@ A self-hosted development platform featuring project management, CI/CD, and LLM 
 
 Once deployed:
 
-- **Taiga**: http://192.168.20.15:9000
-- **Documentation**: http://192.168.20.15:8080
+- **Taiga**: http://shadowlands:9000
+- **Documentation**: http://shadowlands:8080
 
 ## Available Commands
 
@@ -88,7 +104,7 @@ Full documentation is deployed to the lab server:
 
 ```bash
 make mkdocs
-# Access at http://192.168.20.15:8080
+# Access at http://shadowlands:8080
 ```
 
 ## License

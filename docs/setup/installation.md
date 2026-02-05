@@ -28,22 +28,7 @@ sudo systemctl status sshd
 ip addr show
 ```
 
-### 3. Set Up SSH Keys
-
-On your dev machine:
-
-```bash
-# Generate SSH key if you don't have one
-ssh-keygen -t ed25519
-
-# Copy key to lab machine
-ssh-copy-id username@lab-ip
-
-# Test connection
-ssh username@lab-ip
-```
-
-### 4. Configure Passwordless Sudo
+### 3. Configure Passwordless Sudo
 
 Ansible requires passwordless sudo to run playbooks. On the lab machine:
 
@@ -65,6 +50,25 @@ Save and exit. Changes take effect immediately.
 
 ## Dev Machine Setup
 
+### Set Up SSH Keys
+
+**IMPORTANT**: This must be done before running any Ansible commands.
+
+On your dev machine:
+
+```bash
+# Generate SSH key if you don't have one
+ssh-keygen -t ed25519
+
+# Copy key to lab machine
+ssh-copy-id lab-owner@shadowlands
+
+# Test connection
+ssh lab-owner@shadowlands
+```
+
+You should be able to SSH without entering a password. If this doesn't work, Ansible will not be able to connect.
+
 ### Clone Repository
 
 ```bash
@@ -81,7 +85,7 @@ cp inventory/host_vars/labserver.yaml.example inventory/host_vars/labserver.yaml
 ```
 
 Update `inventory/host_vars/labserver.yaml` with:
-- `ansible_host`: actual lab machine IP
+- `ansible_host`: actual lab machine hostname (e.g., shadowlands)
 - `ansible_user`: username you created during Fedora install
 
 ### Build Ansible Container
