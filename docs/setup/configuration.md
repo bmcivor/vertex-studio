@@ -9,8 +9,8 @@ The inventory file defines your lab infrastructure.
 After Fedora Server is installed, edit `inventory/host_vars/labserver.yaml` with your actual values:
 
 ```yaml
-ansible_host: 192.168.1.100  # Your lab machine IP
-ansible_user: blake           # Your username
+ansible_host: shadowlands      # Your lab machine hostname
+ansible_user: lab-owner        # Your username
 ```
 
 This file is gitignored so your local config won't be committed.

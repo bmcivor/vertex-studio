@@ -195,8 +195,8 @@ sudo systemctl restart ollama
 
 Access from any Tailscale device:
 
-- API: `http://100.126.155.102:11434`
-- Example: `curl http://100.126.155.102:11434/api/generate -d '{"model":"llava","prompt":"Hello"}'`
+- API: `http://shadowlands:11434`
+- Example: `curl http://shadowlands:11434/api/generate -d '{"model":"llava","prompt":"Hello"}'`
 
 ## Troubleshooting
 

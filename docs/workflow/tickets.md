@@ -123,7 +123,7 @@ Must be:
 - **Complete**: Covers all aspects of the work
 
 **Good:**
-- "Taiga accessible at http://192.168.20.15:9000"
+- "Taiga accessible at http://shadowlands:9000"
 - "Bootstrap playbook runs without errors"
 - "Docker service is running and enabled on boot"
 
@@ -178,7 +178,7 @@ I want GitLab running on the lab server
 So that I can manage code and run CI/CD pipelines
 
 ## Acceptance Criteria
-- [ ] GitLab accessible at http://192.168.20.15:8080
+- [ ] GitLab accessible at http://shadowlands:8080
 - [ ] Root user can log in
 - [ ] Can create new project
 - [ ] Can push code via SSH
