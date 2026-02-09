@@ -7,4 +7,7 @@ services:
       - .:/app
       - ~/.ssh:/root/.ssh:ro
     working_dir: /app
-    network_mode: host
+    dns:
+      - 100.100.100.100
+    dns_search:
+      - tail252efc.ts.net
