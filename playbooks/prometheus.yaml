@@ -1,0 +1,6 @@
+---
+- name: Deploy Prometheus and cAdvisor for metrics collection
+  hosts: labserver
+  become: true
+  roles:
+    - prometheus

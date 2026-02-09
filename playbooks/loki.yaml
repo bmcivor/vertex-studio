@@ -1,0 +1,6 @@
+---
+- name: Deploy Loki and Promtail for log collection
+  hosts: labserver
+  become: true
+  roles:
+    - loki

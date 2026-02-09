@@ -1,0 +1,6 @@
+---
+- name: Deploy Grafana monitoring dashboard
+  hosts: labserver
+  become: true
+  roles:
+    - grafana

@@ -22,3 +22,12 @@
 
 - name: Deploy MkDocs
   ansible.builtin.import_playbook: mkdocs.yaml
+
+- name: Deploy Prometheus and cAdvisor
+  ansible.builtin.import_playbook: prometheus.yaml
+
+- name: Deploy Loki and Promtail
+  ansible.builtin.import_playbook: loki.yaml
+
+- name: Deploy Grafana
+  ansible.builtin.import_playbook: grafana.yaml

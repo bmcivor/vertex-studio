@@ -1,0 +1,37 @@
+---
+- name: Create loki directory
+  ansible.builtin.file:
+    path: /opt/loki
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: '0755'
+
+- name: Copy docker-compose.yaml
+  ansible.builtin.copy:
+    src: docker-compose.yaml
+    dest: /opt/loki/docker-compose.yaml
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: '0644'
+
+- name: Copy loki-config.yaml
+  ansible.builtin.copy:
+    src: loki-config.yaml
+    dest: /opt/loki/loki-config.yaml
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: '0644'
+
+- name: Copy promtail-config.yaml
+  ansible.builtin.copy:
+    src: promtail-config.yaml
+    dest: /opt/loki/promtail-config.yaml
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: '0644'
+
+- name: Start Loki and Promtail
+  ansible.builtin.command:
+    cmd: docker compose up -d --force-recreate
+    chdir: /opt/loki
