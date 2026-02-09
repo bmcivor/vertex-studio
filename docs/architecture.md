@@ -18,6 +18,14 @@ Vertex Studio is a self-hosted development platform designed to provide a comple
 - **Taiga**: Project management and issue tracking
 - **Local LLM** (planned): Development assistance using 3090 GPU
 
+### Monitoring Layer
+
+- **Grafana**: Metrics and log visualization dashboard
+- **Prometheus**: Metrics collection and storage
+- **cAdvisor**: Docker container metrics collection
+- **Loki**: Log aggregation system
+- **Promtail**: Log collection agent
+
 ## Network Architecture
 
 ```
@@ -29,6 +37,9 @@ Internet
               │
               ├─> Taiga (port 9000)
               ├─> MkDocs (port 8080)
+              ├─> Grafana (port 3000)
+              ├─> Prometheus (port 9091)
+              ├─> cAdvisor (port 8082)
               ├─> GitLab (port 8080) - planned
               └─> Local LLM (port 11434) - planned
 ```

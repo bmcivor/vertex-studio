@@ -8,6 +8,7 @@ A self-hosted development platform featuring project management, CI/CD, and LLM 
 - **CI/CD**: GitLab with integrated runners (planned)
 - **LLM-Assisted Development**: Local LLM using 3090 GPU (planned)
 - **Documentation**: MkDocs served via nginx
+- **Monitoring**: Grafana, Prometheus, and Loki for metrics and logs
 - **Infrastructure as Code**: Fully automated Ansible deployment
 
 ## Quick Start
@@ -66,6 +67,9 @@ Once deployed:
 
 - **Taiga**: http://shadowlands:9000
 - **Documentation**: http://shadowlands:8080
+- **Grafana**: http://shadowlands:3000
+- **Prometheus**: http://shadowlands:9091
+- **cAdvisor**: http://shadowlands:8082
 
 ## Available Commands
 
@@ -78,6 +82,9 @@ make bootstrap-verbose # Run bootstrap with verbose output
 make lab              # Deploy complete platform (bootstrap + all apps)
 make taiga            # Deploy Taiga project management
 make mkdocs           # Deploy MkDocs documentation
+make grafana          # Deploy Grafana monitoring dashboard
+make prometheus       # Deploy Prometheus and cAdvisor for metrics
+make loki             # Deploy Loki and Promtail for log collection
 make clean            # Remove Docker containers and images
 ```
 

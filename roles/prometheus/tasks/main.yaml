@@ -1,0 +1,29 @@
+---
+- name: Create prometheus directory
+  ansible.builtin.file:
+    path: /opt/prometheus
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: '0755'
+
+- name: Copy docker-compose.yaml
+  ansible.builtin.copy:
+    src: docker-compose.yaml
+    dest: /opt/prometheus/docker-compose.yaml
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: '0644'
+
+- name: Copy prometheus.yml
+  ansible.builtin.copy:
+    src: prometheus.yml
+    dest: /opt/prometheus/prometheus.yml
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: '0644'
+
+- name: Start Prometheus and cAdvisor
+  ansible.builtin.command:
+    cmd: docker compose up -d --force-recreate
+    chdir: /opt/prometheus

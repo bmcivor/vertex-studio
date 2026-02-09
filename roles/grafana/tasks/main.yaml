@@ -1,0 +1,21 @@
+---
+- name: Create grafana directory
+  ansible.builtin.file:
+    path: /opt/grafana
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: '0755'
+
+- name: Copy docker-compose.yaml
+  ansible.builtin.copy:
+    src: docker-compose.yaml
+    dest: /opt/grafana/docker-compose.yaml
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: '0644'
+
+- name: Start Grafana
+  ansible.builtin.command:
+    cmd: docker compose up -d --force-recreate
+    chdir: /opt/grafana

@@ -5,6 +5,7 @@ A self-hosted development platform built with Ansible, featuring:
 - **Project Management**: Taiga for issue tracking and agile workflows
 - **CI/CD Pipeline**: GitLab with integrated runners (planned)
 - **LLM Integration**: Local LLM for development assistance using 3090 GPU (planned)
+- **Monitoring**: Grafana, Prometheus, and Loki for metrics and logs
 - **Container Orchestration**: Docker Compose (with k3s migration path)
 
 ## Quick Start
@@ -40,5 +41,8 @@ After deployment, services will be accessible at:
 
 - Taiga: `http://<lab-ip>:9000`
 - MkDocs: `http://<lab-ip>:8080`
+- Grafana: `http://<lab-ip>:3000`
+- Prometheus: `http://<lab-ip>:9091`
+- cAdvisor: `http://<lab-ip>:8082`
 - GitLab: `http://<lab-ip>:8080` (planned)
 - Local LLM: `http://<lab-ip>:11434` (planned)
