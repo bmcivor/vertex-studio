@@ -28,3 +28,41 @@
   ansible.builtin.command:
     cmd: docker compose up -d --force-recreate --remove-orphans
     chdir: /opt/taiga
+
+- name: Wait for RabbitMQ services to be ready
+  ansible.builtin.command:
+    cmd: docker compose exec -T {{ item }} rabbitmqctl list_vhosts
+    chdir: /opt/taiga
+  register: rabbitmq_ready
+  until: rabbitmq_ready.rc == 0
+  retries: 12
+  delay: 5
+  loop:
+    - taiga-events-rabbitmq
+    - taiga-async-rabbitmq
+  loop_control:
+    label: "{{ item }}"
+
+- name: Ensure RabbitMQ vhost exists (events)
+  ansible.builtin.command:
+    cmd: docker compose exec -T taiga-events-rabbitmq rabbitmqctl add_vhost taiga
+    chdir: /opt/taiga
+  register: add_vhost_events
+  failed_when: add_vhost_events.rc != 0 and 'already exists' not in add_vhost_events.stderr
+
+- name: Ensure RabbitMQ vhost exists (async)
+  ansible.builtin.command:
+    cmd: docker compose exec -T taiga-async-rabbitmq rabbitmqctl add_vhost taiga
+    chdir: /opt/taiga
+  register: add_vhost_async
+  failed_when: add_vhost_async.rc != 0 and 'already exists' not in add_vhost_async.stderr
+
+- name: Set RabbitMQ permissions for taiga user (events)
+  ansible.builtin.command:
+    cmd: docker compose exec -T taiga-events-rabbitmq rabbitmqctl set_permissions -p taiga taiga ".*" ".*" ".*"
+    chdir: /opt/taiga
+
+- name: Set RabbitMQ permissions for taiga user (async)
+  ansible.builtin.command:
+    cmd: docker compose exec -T taiga-async-rabbitmq rabbitmqctl set_permissions -p taiga taiga ".*" ".*" ".*"
+    chdir: /opt/taiga
