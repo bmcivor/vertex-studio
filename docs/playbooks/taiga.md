@@ -18,6 +18,7 @@ The Taiga playbook deploys the Taiga project management platform (Jira replaceme
   - `taiga-protected` - Protected file serving
   - `taiga-async-rabbitmq` - Message broker for async tasks
   - `taiga-events-rabbitmq` - Message broker for events
+- Waits for RabbitMQ to be ready, then ensures the `taiga` vhost exists and the `taiga` user has permissions on both events and async brokers (no manual `rabbitmqctl` steps after image or volume changes)
 
 ## Prerequisites
 
@@ -89,6 +90,10 @@ All containers should show status "Up". If gateway shows "Up" but others are res
 docker logs taiga-taiga-back-1
 docker logs taiga-taiga-front-1
 ```
+
+### RabbitMQ "vhost taiga not found" (530 NOT_ALLOWED)
+
+If the backend fails with `vhost taiga not found` after an image or volume change, re-run the playbook: it now ensures the `taiga` vhost and permissions exist on both RabbitMQ containers after startup. No manual `rabbitmqctl` steps needed.
 
 ### Container IP Issues
 
