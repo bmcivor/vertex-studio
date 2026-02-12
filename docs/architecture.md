@@ -14,7 +14,8 @@ Vertex Studio is a self-hosted development platform designed to provide a comple
 
 ### Development Layer
 
-- **GitLab** (planned): Self-hosted Git with integrated CI/CD
+- **GitHub**: Source of truth for code (existing remotes)
+- **Jenkins** (planned): CI server on the lab box; webhooks from GitHub trigger builds. See [Local pipeline design](design/local-pipeline.md).
 - **Taiga**: Project management and issue tracking
 - **Local LLM** (planned): Development assistance using 3090 GPU
 
@@ -40,7 +41,7 @@ Internet
               ├─> Grafana (port 3000)
               ├─> Prometheus (port 9091)
               ├─> cAdvisor (port 8082)
-              ├─> GitLab (port 8080) - planned
+              ├─> Jenkins (port 8080) - planned
               └─> Local LLM (port 11434) - planned
 ```
 
