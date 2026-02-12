@@ -1,6 +1,6 @@
 services:
   prometheus:
-    image: prom/prometheus:latest
+    image: "{{ prometheus_image }}:{{ prometheus_version }}"
     container_name: prometheus
     restart: unless-stopped
     ports:
@@ -15,7 +15,7 @@ services:
       - monitoring
 
   cadvisor:
-    image: gcr.io/cadvisor/cadvisor:latest
+    image: "{{ cadvisor_image }}:{{ cadvisor_version }}"
     container_name: cadvisor
     restart: unless-stopped
     ports:

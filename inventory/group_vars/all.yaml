@@ -1,0 +1,7 @@
+# group_vars/all.yml
+---
+prometheus_image: "prom/prometheus"
+prometheus_version: "v3.9.1"
+
+cadvisor_image: "gcr.io/cadvisor/cadvisor"
+cadvisor_version: "v0.55.1"
