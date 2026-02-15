@@ -17,6 +17,7 @@ help:
 	@echo "  make grafana           - Deploy Grafana monitoring dashboard"
 	@echo "  make prometheus        - Deploy Prometheus and cAdvisor for metrics"
 	@echo "  make loki              - Deploy Loki and Promtail for log collection"
+	@echo "  make jenkins           - Deploy Jenkins CI server"
 	@echo "  make clean             - Remove Docker containers and images"
 	@echo "  make reboot            - Reboot the lab machine"
 	@echo "  make shutdown          - Shutdown the lab machine"
@@ -71,6 +72,9 @@ prometheus: check-docker
 
 loki: check-docker
 	docker-compose run --rm ansible "ansible-playbook playbooks/loki.yaml"
+
+jenkins: check-docker
+	docker-compose run --rm ansible "ansible-playbook playbooks/jenkins.yaml"
 
 clean:
 	@if docker-compose ps -q 2>/dev/null | grep -q .; then \

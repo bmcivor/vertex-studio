@@ -5,3 +5,6 @@ prometheus_version: "v3.9.1"
 
 cadvisor_image: "gcr.io/cadvisor/cadvisor"
 cadvisor_version: "v0.55.1"
+
+jenkins_image: "jenkins/jenkins"
+jenkins_version: "2.550"

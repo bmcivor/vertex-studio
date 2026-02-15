@@ -31,3 +31,6 @@
 
 - name: Deploy Grafana
   ansible.builtin.import_playbook: grafana.yaml
+
+- name: Deploy Jenkins
+  ansible.builtin.import_playbook: jenkins.yaml

@@ -1,0 +1,6 @@
+---
+- name: Deploy Jenkins
+  hosts: labserver
+  become: true
+  roles:
+    - jenkins
