@@ -1,0 +1,21 @@
+---
+- name: Create jenkins directory
+  ansible.builtin.file:
+    path: /opt/jenkins
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: '0755'
+
+- name: Copy docker-compose.yaml
+  ansible.builtin.template:
+    src: docker-compose.yaml.j2
+    dest: /opt/jenkins/docker-compose.yaml
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: '0644'
+
+- name: Start Jenkins
+  ansible.builtin.command:
+    cmd: docker compose up -d --force-recreate
+    chdir: /opt/jenkins
