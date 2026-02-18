@@ -1,0 +1,21 @@
+---
+- name: Create minecraft-bedrock directory
+  ansible.builtin.file:
+    path: /opt/minecraft-bedrock
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: '0755'
+
+- name: Copy docker-compose.yaml
+  ansible.builtin.template:
+    src: docker-compose.yaml.j2
+    dest: /opt/minecraft-bedrock/docker-compose.yaml
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: '0644'
+
+- name: Start Minecraft Bedrock
+  ansible.builtin.command:
+    cmd: docker compose up -d --force-recreate
+    chdir: /opt/minecraft-bedrock

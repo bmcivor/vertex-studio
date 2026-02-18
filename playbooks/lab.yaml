@@ -34,3 +34,6 @@
 
 - name: Deploy Jenkins
   ansible.builtin.import_playbook: jenkins.yaml
+
+- name: Deploy Minecraft Bedrock
+  ansible.builtin.import_playbook: minecraft-bedrock.yaml

@@ -1,0 +1,13 @@
+---
+- name: Minecraft Bedrock Server Management
+  hosts: labserver
+  become: true
+  tasks:
+    - name: Destroy Minecraft Bedrock Server
+      ansible.builtin.command:
+        cmd: docker compose down -v
+        chdir: /opt/minecraft-bedrock
+      when: minecraft_bedrock_destroy == 'true'
+  roles:
+    - role: minecraft-bedrock
+      when: minecraft_bedrock_destroy == 'false'
