@@ -70,22 +70,31 @@ Once deployed:
 - **Grafana**: http://shadowlands:3000
 - **Prometheus**: http://shadowlands:9091
 - **cAdvisor**: http://shadowlands:8082
+- **Loki**: http://shadowlands:3100
+- **Jenkins**: http://shadowlands:8083
+- **Ollama**: http://shadowlands:11434
+- **Stable Diffusion WebUI**: http://shadowlands:7860
+- **Stable Diffusion gallery**: http://shadowlands:8081
+- **Minecraft Bedrock**: shadowlands:19132 (UDP; add server in Bedrock client)
 
 ## Available Commands
 
 ```bash
-make help             # Show all targets
-make build            # Build Ansible Docker container
-make ping             # Test connection to lab machine
-make bootstrap        # Run bootstrap playbook
-make bootstrap-verbose # Run bootstrap with verbose output
-make lab              # Deploy complete platform (bootstrap + all apps)
-make taiga            # Deploy Taiga project management
-make mkdocs           # Deploy MkDocs documentation
-make grafana          # Deploy Grafana monitoring dashboard
-make prometheus       # Deploy Prometheus and cAdvisor for metrics
-make loki             # Deploy Loki and Promtail for log collection
-make clean            # Remove Docker containers and images
+make help                      # Show all targets
+make build                     # Build Ansible Docker container
+make ping                      # Test connection to lab machine
+make bootstrap                 # Run bootstrap playbook
+make bootstrap-verbose         # Run bootstrap with verbose output
+make lab                       # Deploy complete platform (bootstrap + all apps)
+make taiga                     # Deploy Taiga project management
+make mkdocs                    # Deploy MkDocs documentation
+make grafana                   # Deploy Grafana monitoring dashboard
+make prometheus                # Deploy Prometheus and cAdvisor for metrics
+make loki                      # Deploy Loki and Promtail for log collection
+make jenkins                   # Deploy Jenkins CI server
+make minecraft-bedrock         # Deploy Minecraft Bedrock server
+make minecraft-bedrock-destroy # Destroy Minecraft Bedrock server (wipe world, leave stopped)
+make clean                     # Remove Docker containers and images
 ```
 
 ## Project Structure

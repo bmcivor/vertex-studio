@@ -2,28 +2,30 @@
 
 help:
 	@echo "Available targets:"
-	@echo "  make build             - Build Ansible Docker container"
-	@echo "  make ping              - Test connection to lab machine"
-	@echo "  make bootstrap         - Run bootstrap playbook"
-	@echo "  make bootstrap-verbose - Run bootstrap playbook with verbose output"
-	@echo "  make lab               - Deploy complete platform (bootstrap + all apps)"
-	@echo "  make taiga             - Deploy Taiga project management"
-	@echo "  make mkdocs            - Deploy MkDocs documentation"
-	@echo "  make tailscale         - Install Tailscale VPN"
-	@echo "  make nvidia            - Install NVIDIA drivers and CUDA"
-	@echo "  make nvidia-container  - Install NVIDIA container toolkit for Docker GPU"
-	@echo "  make stable-diffusion  - Deploy Stable Diffusion WebUI with SDXL"
-	@echo "  make ollama            - Install Ollama and pull LLaVA model"
-	@echo "  make grafana           - Deploy Grafana monitoring dashboard"
-	@echo "  make prometheus        - Deploy Prometheus and cAdvisor for metrics"
-	@echo "  make loki              - Deploy Loki and Promtail for log collection"
-	@echo "  make jenkins           - Deploy Jenkins CI server"
-	@echo "  make clean             - Remove Docker containers and images"
-	@echo "  make reboot            - Reboot the lab machine"
-	@echo "  make shutdown          - Shutdown the lab machine"
-	@echo "  make bump-patch        - Bump patch version (0.1.0 -> 0.1.1)"
-	@echo "  make bump-minor        - Bump minor version (0.1.0 -> 0.2.0)"
-	@echo "  make bump-major        - Bump major version (0.1.0 -> 1.0.0)"
+	@echo "  make build                     - Build Ansible Docker container"
+	@echo "  make ping                      - Test connection to lab machine"
+	@echo "  make bootstrap                 - Run bootstrap playbook"
+	@echo "  make bootstrap-verbose         - Run bootstrap playbook with verbose output"
+	@echo "  make lab                       - Deploy complete platform (bootstrap + all apps)"
+	@echo "  make taiga                     - Deploy Taiga project management"
+	@echo "  make mkdocs                    - Deploy MkDocs documentation"
+	@echo "  make tailscale                 - Install Tailscale VPN"
+	@echo "  make nvidia                    - Install NVIDIA drivers and CUDA"
+	@echo "  make nvidia-container          - Install NVIDIA container toolkit for Docker GPU"
+	@echo "  make stable-diffusion          - Deploy Stable Diffusion WebUI with SDXL"
+	@echo "  make ollama                    - Install Ollama and pull LLaVA model"
+	@echo "  make grafana                   - Deploy Grafana monitoring dashboard"
+	@echo "  make prometheus                - Deploy Prometheus and cAdvisor for metrics"
+	@echo "  make loki                      - Deploy Loki and Promtail for log collection"
+	@echo "  make jenkins                   - Deploy Jenkins CI server"
+	@echo "  make minecraft-bedrock         - Deploy Minecraft Bedrock server"
+	@echo "  make minecraft-bedrock-destroy - Destroy Minecraft Bedrock server"
+	@echo "  make clean                     - Remove Docker containers and images"
+	@echo "  make reboot                    - Reboot the lab machine"
+	@echo "  make shutdown                  - Shutdown the lab machine"
+	@echo "  make bump-patch                - Bump patch version (0.1.0 -> 0.1.1)"
+	@echo "  make bump-minor                - Bump minor version (0.1.0 -> 0.2.0)"
+	@echo "  make bump-major                - Bump major version (0.1.0 -> 1.0.0)"
 
 check-docker:
 	@docker info > /dev/null 2>&1 || (echo "Docker is not running. Please start Docker and try again." && exit 1)
@@ -75,6 +77,12 @@ loki: check-docker
 
 jenkins: check-docker
 	docker-compose run --rm ansible "ansible-playbook playbooks/jenkins.yaml"
+
+minecraft-bedrock: check-docker
+	docker-compose run --rm ansible "ansible-playbook playbooks/minecraft-bedrock.yaml -e minecraft_bedrock_destroy=false"
+
+minecraft-bedrock-destroy: check-docker
+	docker-compose run --rm ansible "ansible-playbook playbooks/minecraft-bedrock.yaml -e minecraft_bedrock_destroy=true"
 
 clean:
 	@if docker-compose ps -q 2>/dev/null | grep -q .; then \

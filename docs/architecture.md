@@ -15,9 +15,12 @@ Vertex Studio is a self-hosted development platform designed to provide a comple
 ### Development Layer
 
 - **GitHub**: Source of truth for code (existing remotes)
-- **Jenkins** (planned): CI server on the lab box; webhooks from GitHub trigger builds. See [Local pipeline design](design/local-pipeline.md).
+- **Jenkins**: CI server on the lab box; webhooks from GitHub trigger builds. See [Local pipeline design](design/local-pipeline.md).
 - **Taiga**: Project management and issue tracking
-- **Local LLM** (planned): Development assistance using 3090 GPU
+- **Ollama**: Local LLM (e.g. LLaVA) using 3090 GPU
+- **Stable Diffusion**: AUTOMATIC1111 WebUI with GPU for image generation
+- **Minecraft Bedrock**: Private Bedrock server (world on lab)
+- **Tailscale**: VPN for remote access to the lab
 
 ### Monitoring Layer
 
@@ -41,8 +44,12 @@ Internet
               ├─> Grafana (port 3000)
               ├─> Prometheus (port 9091)
               ├─> cAdvisor (port 8082)
-              ├─> Jenkins (port 8080) - planned
-              └─> Local LLM (port 11434) - planned
+              ├─> Loki (port 3100)
+              ├─> Jenkins (port 8083)
+              ├─> Ollama (port 11434)
+              ├─> Stable Diffusion WebUI (port 7860)
+              ├─> Stable Diffusion gallery (port 8081)
+              └─> Minecraft Bedrock (port 19132/udp)
 ```
 
 ## Design Decisions

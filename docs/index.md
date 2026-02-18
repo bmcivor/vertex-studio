@@ -3,9 +3,13 @@
 A self-hosted development platform built with Ansible, featuring:
 
 - **Project Management**: Taiga for issue tracking and agile workflows
-- **CI/CD Pipeline**: GitLab with integrated runners (planned)
-- **LLM Integration**: Local LLM for development assistance using 3090 GPU (planned)
-- **Monitoring**: Grafana, Prometheus, and Loki for metrics and logs
+- **CI/CD**: Jenkins on the lab box; webhooks from GitHub trigger builds
+- **LLM Integration**: Ollama for local LLM (e.g. LLaVA) using 3090 GPU
+- **Documentation**: MkDocs served via nginx
+- **Monitoring**: Grafana, Prometheus, Loki, and cAdvisor for metrics and logs
+- **Stable Diffusion**: AUTOMATIC1111 WebUI with GPU (SDXL); optional gallery for outputs
+- **Minecraft Bedrock**: Private Bedrock server (world on lab; deploy/destroy via playbook)
+- **Remote Access**: Tailscale VPN for reaching the lab from elsewhere
 - **Container Orchestration**: Docker Compose (with k3s migration path)
 
 ## Quick Start
@@ -25,11 +29,11 @@ make build
 # Test connection
 make ping
 
-# Deploy step-by-step
-make bootstrap
-make taiga
-make mkdocs
+# Deploy full platform (bootstrap + all apps)
+make lab
 ```
+
+Or deploy step-by-step: `make bootstrap`, then individual targets (`make taiga`, `make mkdocs`, `make minecraft-bedrock`, etc.). See [Lab Playbook](playbooks/lab.md) for the full list.
 
 ## Architecture
 
@@ -44,5 +48,9 @@ After deployment, services will be accessible at:
 - Grafana: `http://<lab-ip>:3000`
 - Prometheus: `http://<lab-ip>:9091`
 - cAdvisor: `http://<lab-ip>:8082`
-- GitLab: `http://<lab-ip>:8080` (planned)
-- Local LLM: `http://<lab-ip>:11434` (planned)
+- Loki: `http://<lab-ip>:3100` (log ingestion API)
+- Jenkins: `http://<lab-ip>:8083`
+- Ollama (LLM API): `http://<lab-ip>:11434`
+- Stable Diffusion WebUI: `http://<lab-ip>:7860`
+- Stable Diffusion gallery: `http://<lab-ip>:8081`
+- Minecraft Bedrock: `<lab-ip>:19132` (UDP; add server in Bedrock client)

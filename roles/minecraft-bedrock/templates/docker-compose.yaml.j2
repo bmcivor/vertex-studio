@@ -1,0 +1,26 @@
+services:
+  minecraft-bedrock:
+    image: "{{ minecraft_bedrock_image }}:{{ minecraft_bedrock_version }}"
+    container_name: minecraft-bedrock
+    restart: unless-stopped
+    ports:
+      - "19132:19132/udp"
+    volumes:
+      - minecraft-bedrock-data:/data
+    environment:
+      - EULA={{ EULA }}
+      - SERVER_NAME={{ SERVER_NAME }}
+      - LEVEL_NAME={{ LEVEL_NAME }}
+      - GAMEMODE={{ GAMEMODE }}
+      - DIFFICULTY={{ DIFFICULTY }}
+      - MAX_PLAYERS={{ MAX_PLAYERS }}
+      - ONLINE_MODE={{ ONLINE_MODE }}
+    networks:
+      - default
+
+volumes:
+  minecraft-bedrock-data:
+
+networks:
+  default:
+    name: minecraft-bedrock-network
