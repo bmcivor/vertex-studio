@@ -114,6 +114,21 @@ vertex-studio/
 └── README.md
 ```
 
+## Vertex apps (ideas)
+
+Studio deploys **vertex-*** apps as container images to the host. These are independent apps; studio pulls the built image and runs them. Ideas for future vertex-* apps:
+
+| App | Purpose |
+|-----|---------|
+| **vertex-block** | First app; establishes build → image → studio deploy pattern. |
+| **vertex-dashboard** | Single "lab home" page with links to Taiga, Grafana, Jenkins, MkDocs, etc. |
+| **vertex-notify** | Notifications when builds fail, backups complete, or services go down (Discord/Slack/email/webhook). |
+| **vertex-backup** | Backup orchestrator: Taiga DB, Minecraft volume, configs; scheduled runs, optional notify on completion/failure. |
+| **vertex-health** | Checks service endpoints (and e.g. Minecraft port); exposes up/down or metrics for Grafana/alerting. |
+| **vertex-registry** | Private container registry so studio pulls your built images from the lab. |
+| **vertex-bot** | Chat bot (Discord/Slack/Matrix) to query Ollama, check status, trigger Stable Diffusion or backups. |
+| **vertex-sync** | Sync config, backup metadata, or env files between the lab and another location. |
+
 ## Documentation
 
 Full documentation is deployed to the lab server:
