@@ -7,6 +7,27 @@
     group: docker
     mode: '0755'
 
+- name: Copy plugins.txt
+  ansible.builtin.copy:
+    src: plugins.txt
+    dest: /opt/jenkins/plugins.txt
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: '0644'
+
+- name: Copy Dockerfile
+  ansible.builtin.template:
+    src: Dockerfile.j2
+    dest: /opt/jenkins/Dockerfile
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: '0644'
+
+- name: Build Jenkins
+  ansible.builtin.command:
+    cmd: docker build -t jenkins-custom:{{ jenkins_version }} .
+    chdir: /opt/jenkins
+
 - name: Copy docker-compose.yaml
   ansible.builtin.template:
     src: docker-compose.yaml.j2

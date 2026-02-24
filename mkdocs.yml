@@ -31,6 +31,7 @@ nav:
     - NVIDIA Container: playbooks/nvidia-container.md
     - Stable Diffusion: playbooks/stable-diffusion.md
     - Ollama: playbooks/ollama.md
+    - Jenkins: playbooks/jenkins.md
   - Workflow:
     - Ticket Standards: workflow/tickets.md
   - Operations:

@@ -1,6 +1,6 @@
 services:
   jenkins:
-    image: "{{ jenkins_image }}:{{ jenkins_version }}"
+    image: "jenkins-custom:{{ jenkins_version }}"
     container_name: jenkins
     restart: unless-stopped
     ports:
@@ -17,6 +17,7 @@ services:
 volumes:
   jenkins-data:
   jenkins-config:
+
 
 networks:
   default:
