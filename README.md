@@ -5,7 +5,7 @@ A self-hosted development platform featuring project management, CI/CD, and LLM 
 ## Features
 
 - **Project Management**: Taiga for agile workflows and issue tracking
-- **CI/CD**: GitLab with integrated runners (planned)
+- **CI/CD**: Jenkins with custom plugin image
 - **LLM-Assisted Development**: Local LLM using 3090 GPU (planned)
 - **Documentation**: MkDocs served via nginx
 - **Monitoring**: Grafana, Prometheus, and Loki for metrics and logs
