@@ -16,3 +16,6 @@ jenkins_repos:
 
 minecraft_bedrock_image: "itzg/minecraft-bedrock-server"
 minecraft_bedrock_version: "2026.2.0"
+
+registry_image: "registry"
+registry_version: "2"

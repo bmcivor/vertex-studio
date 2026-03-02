@@ -1,4 +1,4 @@
-.PHONY: help check-docker build ping bootstrap bootstrap-verbose lab taiga mkdocs tailscale nvidia nvidia-container stable-diffusion ollama grafana prometheus loki clean bump-patch bump-minor bump-major
+.PHONY: help check-docker build ping bootstrap bootstrap-verbose lab taiga mkdocs tailscale nvidia nvidia-container stable-diffusion ollama grafana prometheus loki registry clean bump-patch bump-minor bump-major
 
 help:
 	@echo "Available targets:"
@@ -17,6 +17,7 @@ help:
 	@echo "  make grafana                   - Deploy Grafana monitoring dashboard"
 	@echo "  make prometheus                - Deploy Prometheus and cAdvisor for metrics"
 	@echo "  make loki                      - Deploy Loki and Promtail for log collection"
+	@echo "  make registry                  - Deploy Docker Registry"
 	@echo "  make jenkins                   - Deploy Jenkins CI server"
 	@echo "  make minecraft-bedrock         - Deploy Minecraft Bedrock server"
 	@echo "  make minecraft-bedrock-destroy - Destroy Minecraft Bedrock server"
@@ -74,6 +75,9 @@ prometheus: check-docker
 
 loki: check-docker
 	docker-compose run --rm ansible "ansible-playbook playbooks/loki.yaml"
+
+registry: check-docker
+	docker-compose run --rm ansible "ansible-playbook playbooks/registry.yaml"
 
 jenkins: check-docker
 	docker-compose run --rm ansible "ansible-playbook playbooks/jenkins.yaml"

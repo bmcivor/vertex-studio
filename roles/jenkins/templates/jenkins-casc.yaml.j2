@@ -34,11 +34,18 @@ jobs:
   - script: >
       multibranchPipelineJob('{{ repo }}') {
         branchSources {
-          github {
-            id('{{ repo }}')
-            scanCredentialsId('github-pat')
-            repoOwner('{{ github_username }}')
-            repository('{{ repo }}')
+          branchSource {
+            source {
+              github {
+                id('{{ repo }}')
+                scanCredentialsId('github-pat')
+                repoOwner('{{ github_username }}')
+                repository('{{ repo }}')
+                traits {
+                  gitHubTagDiscovery()
+                }
+              }
+            }
           }
         }
         orphanedItemStrategy {

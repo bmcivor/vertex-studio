@@ -1,0 +1,18 @@
+services:
+  registry:
+    image: "{{ registry_image }}:{{ registry_version }}"
+    container_name: registry
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    volumes:
+      - registry-data:/var/lib/registry
+    networks:
+      - default
+
+volumes:
+  registry-data:
+
+networks:
+  default:
+    name: registry-network
