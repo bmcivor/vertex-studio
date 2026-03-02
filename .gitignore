@@ -23,6 +23,7 @@ secrets.yaml
 !roles/**/files/*.key
 inventory/host_vars/labserver.yaml
 inventory/group_vars/local.yaml
+.vault_password
 
 # IDE
 .vscode/
