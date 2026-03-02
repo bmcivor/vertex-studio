@@ -7,6 +7,15 @@
     group: docker
     mode: '0755'
 
+- name: Get Docker group GID
+  ansible.builtin.command: getent group docker
+  register: docker_group_info
+  changed_when: false
+
+- name: Set Docker GID fact
+  ansible.builtin.set_fact:
+    docker_gid: "{{ docker_group_info.stdout.split(':')[2] }}"
+
 - name: Copy plugins.txt
   ansible.builtin.copy:
     src: plugins.txt
@@ -27,6 +36,22 @@
   ansible.builtin.command:
     cmd: docker build -t jenkins-custom:{{ jenkins_version }} .
     chdir: /opt/jenkins
+
+- name: Copy JCasC configuration
+  ansible.builtin.template:
+    src: jenkins-casc.yaml.j2
+    dest: /opt/jenkins/jenkins-casc.yaml
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: '0644'
+
+- name: Create .env file for secrets
+  ansible.builtin.template:
+    src: env.j2
+    dest: /opt/jenkins/.env
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: '0600'
 
 - name: Copy docker-compose.yaml
   ansible.builtin.template:

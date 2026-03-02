@@ -48,4 +48,6 @@ docker-compose run --rm ansible "ansible-playbook playbooks/lab.yaml -vv"
 - Full platform redeployment
 - Ensuring all components are in sync
 
-For individual component updates, use the specific `make` targets (`make taiga`, `make mkdocs`, `make minecraft-bedrock`, etc.) instead.
+For individual component updates, use the specific `make` targets (`make taiga`, `make mkdocs`, `make jenkins`, `make minecraft-bedrock`, etc.) instead.
+
+**Note:** Jenkins requires one-time manual setup steps (vault password, GitHub PAT, Tailscale Funnel, webhooks). See [Jenkins Playbook](jenkins.md) for details.

@@ -5,19 +5,22 @@ services:
     restart: unless-stopped
     ports:
       - "8083:8080"
+    env_file:
+      - .env
     environment:
-      - JENKINS_ADMIN_USER=admin
-      - JENKINS_ADMIN_PASSWORD=${JENKINS_ADMIN_PASSWORD:-admin}
+      - CASC_JENKINS_CONFIG=/var/jenkins_home/casc_configs/jenkins-casc.yaml
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
     volumes:
-      - jenkins-data:/var/lib/jenkins
-      - jenkins-config:/etc/jenkins
+      - jenkins-data:/var/jenkins_home
+      - ./jenkins-casc.yaml:/var/jenkins_home/casc_configs/jenkins-casc.yaml:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    group_add:
+      - "{{ docker_gid }}"
     networks:
       - default
 
 volumes:
   jenkins-data:
-  jenkins-config:
-
 
 networks:
   default:
