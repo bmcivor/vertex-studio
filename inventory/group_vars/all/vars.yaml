@@ -13,6 +13,7 @@ jenkins_url: "https://shadowlands.tail252efc.ts.net"
 github_username: "bmcivor"
 jenkins_repos:
   - vertex-block
+  - vertex-studio
 
 minecraft_bedrock_image: "itzg/minecraft-bedrock-server"
 minecraft_bedrock_version: "2026.2.0"
