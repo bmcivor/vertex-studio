@@ -1,0 +1,6 @@
+---
+- name: Deploy Docker Registry
+  hosts: labserver
+  become: true
+  roles:
+    - registry

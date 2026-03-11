@@ -63,7 +63,9 @@ Then: `sudo systemctl restart docker`
 
 **Hostname vs IP:** Both work. `insecure-registries` accepts either (e.g. `shadowlands:5000` or `192.168.1.10:5000`).
 
-**Docker 29+ caveat:** When Docker Engine 29+ uses the containerd image store (default on fresh installs), `insecure-registries` may be ignored. Push/pull fails with TLS errors despite the registry appearing in `docker info`. Bug: [docker/cli#6748](https://github.com/docker/cli/issues/6748). Workaround: set `"containerd-snapshotter": false` in daemon.json to use the legacy storage driver. **Verify Docker version on shadowlands** (bootstrap installs docker-ce from Fedora repo; version depends on repo).
+**Docker 29+ caveat:** When Docker Engine 29+ uses the containerd image store (default on fresh installs), `insecure-registries` may be ignored. Push/pull fails with TLS errors despite the registry appearing in `docker info`. Bug: [docker/cli#6748](https://github.com/docker/cli/issues/6748). Workaround: set `"containerd-snapshotter": false` in daemon.json to use the legacy storage driver.
+
+**POC result (shadowlands):** Docker 29.2.1. daemon.json exists (nvidia runtime only); no containerd-snapshotter override. Insecure-registries will likely need the workaround.
 
 ### Authentication (Optional)
 
@@ -145,7 +147,7 @@ withDockerRegistry([credentialsId: 'registry-creds', url: 'http://shadowlands:50
 
 Requires **Docker Pipeline** plugin. Handles login/logout around the block.
 
-**Plugin check:** `docker-workflow` or `docker pipeline` — need to verify exact plugin name and if it's already installed.
+**POC result:** No docker-related plugins in Jenkins. Add `docker-workflow` to plugins.txt if using `withDockerRegistry`.
 
 ### Without Authentication
 
@@ -172,8 +174,10 @@ Deleting a tag does not free disk space immediately. Registry keeps blob layers 
 
 **Command:**
 ```bash
-docker exec registry bin/registry garbage-collect --delete-untagged /etc/docker/registry/config.yml
+docker exec registry /bin/registry garbage-collect --delete-untagged /etc/docker/registry/config.yml
 ```
+
+**POC result:** Both registry:2 and registry:3.0.0 have the binary at `/bin/registry`.
 
 **Flags:**
 - `--delete-untagged`: Remove blobs not referenced by any manifest (required for effective cleanup in 2.7+)
@@ -193,7 +197,7 @@ Or use a third-party tool/script for retention.
 ### 1. Deploy Registry
 
 - Add Ansible role or tasks to deploy `registry:2` on shadowlands
-- Port 5000 (or another if 5000 is taken)
+- Port 5000 (POC: free on shadowlands)
 - Persistent volume for `/var/lib/registry`
 - Optional: config.yml, auth, TLS
 
@@ -267,13 +271,9 @@ branchSources {
 
 ## Open Questions
 
-1. **Port 5000** — Is it free on shadowlands? (e.g. AirPlay uses 5000 on macOS; shadowlands is Fedora)
-2. **Auth** — Do we need it? If registry is only reachable on the lab network, maybe not.
-3. **Tag source** — Jenkins multibranch: how do we get the git tag for the current commit? (`env.TAG_NAME` exists for tag builds; need to verify multibranch behaviour)
-4. **Plugin** — Is Docker Pipeline already in the Jenkins image? If not, add to plugins.txt.
-5. **Network** — Will anything other than shadowlands pull from the registry? If so, they need `insecure-registries` too, and network access to shadowlands:5000.
-6. **Docker version** — What Docker version does shadowlands run? (Affects insecure-registries / Docker 29 bug)
-7. **GC binary path** — `bin/registry garbage-collect` used in doc; registry:3 may have different layout. Verify before scripting.
+1. **Auth** — Do we need it? If registry is only reachable on the lab network, maybe not.
+2. **Tag source** — Jenkins multibranch: how do we get the git tag for the current commit? (`env.TAG_NAME` exists for tag builds; need to verify multibranch behaviour)
+3. **Network** — Will anything other than shadowlands pull from the registry? If so, they need `insecure-registries` too, and network access to shadowlands:5000.
 
 ---
 
@@ -297,10 +297,10 @@ branchSources {
 | Item | Status |
 |------|--------|
 | `insecure-registries` works with hostname | Verified: both hostname and IP accepted |
-| `insecure-registries` works on Docker 29+ | **Risk:** Ignored when containerd-snapshotter enabled; workaround: disable it |
+| `insecure-registries` works on Docker 29+ | **Risk:** shadowlands runs 29.2.1; workaround required (containerd-snapshotter: false) |
 | `registry:2` vs `registry:3` | Clarified: both available; latest = 3.0.0; pin explicitly if desired |
 | JCasC shorthand `github { }` supports traits | **Assumption:** No — use full `branchSource { source { github { traits { } } } }` form |
 | Tag discovery alone triggers builds | **Unverified:** basic-branch-build-strategies may be required for tag builds |
-| GC command path `bin/registry garbage-collect` | **Unverified:** registry:3 layout may differ |
-| Port 5000 free on shadowlands | Open |
-| Docker Pipeline plugin | Not in plugins.txt; add if using `withDockerRegistry` |
+| GC command path | **Verified:** `/bin/registry` in both registry:2 and registry:3.0.0 |
+| Port 5000 free on shadowlands | **Verified:** Free |
+| Docker Pipeline plugin | **Verified:** Not installed; add to plugins.txt if using `withDockerRegistry` |

@@ -1,0 +1,41 @@
+---
+- name: Read current daemon.json
+  ansible.builtin.slurp:
+    src: /etc/docker/daemon.json
+  register: daemon_json_raw
+  ignore_errors: true
+
+- name: Set daemon config (merge registry settings)
+  ansible.builtin.set_fact:
+    daemon_config: "{{ ((daemon_json_raw.content | b64decode | from_json) if not daemon_json_raw.failed else {}) | combine({'insecure-registries': [ansible_hostname + ':5000'], 'features': {'containerd-snapshotter': false}}, recursive=true) }}"
+
+- name: Configure daemon.json for registry
+  ansible.builtin.copy:
+    dest: /etc/docker/daemon.json
+    content: "{{ daemon_config | to_nice_json }}"
+    mode: '0644'
+  notify: Restart docker
+
+- name: Flush handlers so Docker restarts before starting registry
+  ansible.builtin.meta: flush_handlers
+
+- name: Create registry directory
+  ansible.builtin.file:
+    path: /opt/registry
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: '0755'
+
+- name: Copy docker-compose.yaml
+  ansible.builtin.template:
+    src: docker-compose.yaml.j2
+    dest: /opt/registry/docker-compose.yaml
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: '0644'
+
+- name: Start registry
+  ansible.builtin.command:
+    cmd: docker compose up -d --force-recreate
+    chdir: /opt/registry

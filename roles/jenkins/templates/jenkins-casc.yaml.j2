@@ -34,11 +34,29 @@ jobs:
   - script: >
       multibranchPipelineJob('{{ repo }}') {
         branchSources {
-          github {
-            id('{{ repo }}')
-            scanCredentialsId('github-pat')
-            repoOwner('{{ github_username }}')
-            repository('{{ repo }}')
+          branchSource {
+            source {
+              github {
+                id('{{ repo }}')
+                repoOwner('{{ github_username }}')
+                repository('{{ repo }}')
+                repositoryUrl('https://github.com/{{ github_username }}/{{ repo }}')
+                configuredByUrl(true)
+                credentialsId('github-pat')
+                traits {
+                  gitHubBranchDiscovery {
+                    strategyId(1)
+                  }
+                  gitHubTagDiscovery()
+                }
+              }
+            }
+            buildStrategies {
+              buildTags {
+                atLeastDays('-1')
+                atMostDays('7')
+              }
+            }
           }
         }
         orphanedItemStrategy {
