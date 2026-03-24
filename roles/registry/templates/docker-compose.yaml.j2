@@ -10,6 +10,22 @@ services:
     networks:
       - default
 
+  registry-ui:
+    image: "{{ registry_ui_image }}:{{ registry_ui_version }}"
+    container_name: registry-ui
+    restart: unless-stopped
+    ports:
+      - "8084:80"
+    environment:
+      - SINGLE_REGISTRY=true
+      - NGINX_PROXY_PASS_URL=http://registry:5000
+      - REGISTRY_TITLE=Shadowlands Registry
+      - DELETE_IMAGES=true
+    depends_on:
+      - registry
+    networks:
+      - default
+
 volumes:
   registry-data:
 

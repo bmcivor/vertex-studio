@@ -17,7 +17,7 @@ help:
 	@echo "  make grafana                   - Deploy Grafana monitoring dashboard"
 	@echo "  make prometheus                - Deploy Prometheus and cAdvisor for metrics"
 	@echo "  make loki                      - Deploy Loki and Promtail for log collection"
-	@echo "  make registry                  - Deploy Docker Registry"
+	@echo "  make registry                  - Deploy Docker Registry and UI"
 	@echo "  make jenkins                   - Deploy Jenkins CI server"
 	@echo "  make minecraft-bedrock         - Deploy Minecraft Bedrock server"
 	@echo "  make minecraft-bedrock-destroy - Destroy Minecraft Bedrock server"
