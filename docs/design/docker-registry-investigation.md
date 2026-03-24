@@ -269,6 +269,18 @@ branchSources {
 
 ---
 
+## Registry UI
+
+Web UI for browsing repositories and tags, using [Joxit/docker-registry-ui](https://github.com/Joxit/docker-registry-ui) (v2.5.7).
+
+- Deployed alongside the registry in the same compose stack (`make registry`)
+- Port `8084` on the host, accessible at `http://shadowlands:8084`
+- Uses `NGINX_PROXY_PASS_URL=http://registry:5000` to proxy API requests through nginx on the same Docker network, avoiding CORS issues entirely
+- `DELETE_IMAGES=true` allows manual image deletion from the UI (still requires GC to reclaim disk)
+- `SINGLE_REGISTRY=true` since we only have one registry
+
+---
+
 ## Open Questions
 
 1. **Auth** — Do we need it? If registry is only reachable on the lab network, maybe not.

@@ -7,7 +7,7 @@
 
 - name: Set daemon config (merge registry settings)
   ansible.builtin.set_fact:
-    daemon_config: "{{ ((daemon_json_raw.content | b64decode | from_json) if not daemon_json_raw.failed else {}) | combine({'insecure-registries': [ansible_hostname + ':5000'], 'features': {'containerd-snapshotter': false}}, recursive=true) }}"
+    daemon_config: "{{ ((daemon_json_raw.content | b64decode | from_json) if not daemon_json_raw.failed else {}) | combine({'insecure-registries': [ansible_facts['hostname'] + ':5000'], 'features': {'containerd-snapshotter': false}}, recursive=true) }}"
 
 - name: Configure daemon.json for registry
   ansible.builtin.copy:
