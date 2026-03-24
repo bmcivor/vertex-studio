@@ -17,6 +17,7 @@ theme:
 
 nav:
   - Home: index.md
+  - Services: services.md
   - Architecture: architecture.md
   - Setup:
     - Installation: setup/installation.md
