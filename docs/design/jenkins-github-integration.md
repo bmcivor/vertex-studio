@@ -240,6 +240,7 @@ vault_password_file = .vault_password
 ```yaml
 jenkins_admin_password: "the-actual-password"
 github_pat: "ghp_xxxxxxxxxxxx"
+openclaw_gateway_auth_token: "long-random-hex-string"
 ```
 
 `roles/jenkins/templates/env.j2` — rendered to `/opt/jenkins/.env` on shadowlands:

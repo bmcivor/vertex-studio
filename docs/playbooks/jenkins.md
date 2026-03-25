@@ -76,6 +76,7 @@ Results reported back to GitHub commit status
 |----------|-------------|
 | `jenkins_admin_password` | Admin login password |
 | `github_pat` | GitHub Personal Access Token |
+| `openclaw_gateway_auth_token` | OpenClaw gateway Control UI token (used by `make openclaw`) |
 
 ## Secrets Management
 

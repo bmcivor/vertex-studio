@@ -1,0 +1,6 @@
+---
+- name: Install OpenClaw gateway
+  hosts: labserver
+  become: true
+  roles:
+    - openclaw

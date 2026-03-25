@@ -1,0 +1,10 @@
+services:
+  openclaw:
+    image: {{ openclaw_image }}:{{ openclaw_version }}
+    container_name: openclaw
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      OLLAMA_API_KEY: ollama-local
+    volumes:
+      - /opt/openclaw/config:/home/node/.openclaw

@@ -1,0 +1,40 @@
+---
+- name: Require OpenClaw gateway token from vault
+  ansible.builtin.assert:
+    that:
+      - openclaw_gateway_auth_token is defined
+      - openclaw_gateway_auth_token | length > 0
+    fail_msg: "Set openclaw_gateway_auth_token in inventory/group_vars/all/vault.yaml (ansible-vault edit)."
+
+- name: Create OpenClaw config directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "1000"
+    group: "1000"
+    mode: "0755"
+  loop:
+    - /opt/openclaw
+    - /opt/openclaw/config
+    - /opt/openclaw/config/workspace
+
+- name: Deploy OpenClaw gateway config
+  ansible.builtin.template:
+    src: openclaw.json.j2
+    dest: /opt/openclaw/config/openclaw.json
+    owner: "1000"
+    group: "1000"
+    mode: "0644"
+
+- name: Deploy OpenClaw docker-compose
+  ansible.builtin.template:
+    src: docker-compose.yaml.j2
+    dest: /opt/openclaw/docker-compose.yaml
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: "0644"
+
+- name: Start OpenClaw gateway
+  ansible.builtin.command:
+    cmd: docker compose up -d --force-recreate
+    chdir: /opt/openclaw

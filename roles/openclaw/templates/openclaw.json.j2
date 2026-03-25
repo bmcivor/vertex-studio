@@ -1,0 +1,19 @@
+{
+  "agents": {
+    "defaults": {
+      "workspace": "/home/node/.openclaw/workspace",
+      "model": {
+        "primary": "ollama/llava"
+      }
+    }
+  },
+  "gateway": {
+    "mode": "local",
+    "port": {{ openclaw_gateway_port }},
+    "bind": {{ openclaw_gateway_bind | to_json }},
+    "auth": {
+      "mode": "token",
+      "token": {{ openclaw_gateway_auth_token | to_json }}
+    }
+  }
+}

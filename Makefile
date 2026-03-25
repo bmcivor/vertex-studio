@@ -1,4 +1,4 @@
-.PHONY: help check-docker build ping bootstrap bootstrap-verbose lab taiga mkdocs tailscale nvidia nvidia-container stable-diffusion ollama grafana prometheus loki registry clean bump-patch bump-minor bump-major
+.PHONY: help check-docker build ping bootstrap bootstrap-verbose lab taiga mkdocs tailscale nvidia nvidia-container stable-diffusion ollama openclaw grafana prometheus loki registry clean bump-patch bump-minor bump-major
 
 help:
 	@echo "Available targets:"
@@ -14,6 +14,7 @@ help:
 	@echo "  make nvidia-container          - Install NVIDIA container toolkit for Docker GPU"
 	@echo "  make stable-diffusion          - Deploy Stable Diffusion WebUI with SDXL"
 	@echo "  make ollama                    - Install Ollama and pull LLaVA model"
+	@echo "  make openclaw                  - Deploy OpenClaw gateway"
 	@echo "  make grafana                   - Deploy Grafana monitoring dashboard"
 	@echo "  make prometheus                - Deploy Prometheus and cAdvisor for metrics"
 	@echo "  make loki                      - Deploy Loki and Promtail for log collection"
@@ -66,6 +67,9 @@ stable-diffusion: check-docker
 
 ollama: check-docker
 	docker-compose run --rm ansible "ansible-playbook playbooks/ollama.yaml"
+
+openclaw: check-docker
+	docker-compose run --rm ansible "ansible-playbook playbooks/openclaw.yaml"
 
 grafana: check-docker
 	docker-compose run --rm ansible "ansible-playbook playbooks/grafana.yaml"

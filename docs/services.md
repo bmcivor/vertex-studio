@@ -13,6 +13,7 @@ All services are hosted on `shadowlands` and accessible via Tailscale VPN using 
 | Registry UI | `http://shadowlands.tail252efc.ts.net:8084` | Docker registry browser |
 | MkDocs | `http://shadowlands.tail252efc.ts.net:8080` | This documentation site |
 | SD Gallery | `http://shadowlands.tail252efc.ts.net:8081` | Stable Diffusion image gallery |
+| OpenClaw Control UI | `http://shadowlands.tail252efc.ts.net:18789` | OpenClaw gateway Control UI (token in encrypted `vault.yaml`) |
 
 ## APIs / Internal
 
