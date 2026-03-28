@@ -8,6 +8,7 @@ services:
     volumes:
       - minecraft-bedrock-data:/data
     environment:
+      - VERSION={{ minecraft_bedrock_package_version }}
       - EULA={{ EULA }}
       - SERVER_NAME={{ SERVER_NAME }}
       - LEVEL_NAME={{ LEVEL_NAME }}

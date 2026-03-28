@@ -10,7 +10,15 @@ Deploys and manages a private Minecraft Bedrock Dedicated Server on the lab box 
 ## Prerequisites
 
 - Bootstrap completed (Docker on the lab server).
-- Image and version set in `inventory/group_vars/all.yaml` (`minecraft_bedrock_image`, `minecraft_bedrock_version`). Server options are in `roles/minecraft-bedrock/defaults/main.yaml`.
+- Bedrock container image settings in `inventory/group_vars/all/vars.yaml`:
+  - `minecraft_bedrock_image` — image name (e.g. `itzg/minecraft-bedrock-server`).
+  - `minecraft_bedrock_version` — **Docker image tag** from Docker Hub (the itzg wrapper release).
+  - `minecraft_bedrock_package_version` — value passed to the container as **`VERSION`** ([itzg/minecraft-bedrock-server](https://github.com/itzg/docker-minecraft-bedrock-server)): which **Mojang** Bedrock Dedicated Server zip to download. Use `LATEST` to follow the current stable build from minecraft.net, or set the exact version string that matches the Linux zip filename (`bedrock-server-<version>.zip`). The image tag and the Mojang zip version are **not** the same thing; pinning both to the same number can produce a 404 if Mojang never published that zip name.
+- Gameplay and server properties (level name, gamemode, difficulty, etc.) are in `roles/minecraft-bedrock/defaults/main.yaml` (overridable via inventory if you add keys there).
+
+## Versions and client mismatch
+
+Bedrock clients only join a server whose dedicated server build matches their protocol. After a client update, if you see a version mismatch, redeploy with `make minecraft-bedrock` so the container can pull a current server build (especially when `minecraft_bedrock_package_version` is `LATEST`). Bump `minecraft_bedrock_version` when you want a newer itzg image (wrapper scripts and base image). The named volume is **not** removed by a normal deploy, so the world is kept; do **not** run `make minecraft-bedrock-destroy` unless you intend to delete the world volume.
 
 ## Usage
 
