@@ -16,7 +16,8 @@ jenkins_repos:
   - vertex-studio
 
 minecraft_bedrock_image: "itzg/minecraft-bedrock-server"
-minecraft_bedrock_version: "2026.2.0"
+minecraft_bedrock_version: "2026.3.1"
+minecraft_bedrock_package_version: "LATEST"
 
 registry_image: "registry"
 registry_version: "2"
