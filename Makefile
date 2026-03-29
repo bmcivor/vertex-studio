@@ -1,4 +1,11 @@
-.PHONY: help check-docker build ping bootstrap bootstrap-verbose lab taiga mkdocs tailscale nvidia nvidia-container stable-diffusion ollama grafana prometheus loki registry clean bump-patch bump-minor bump-major
+.PHONY: help check-docker build ping bootstrap bootstrap-verbose lab taiga mkdocs tailscale nvidia nvidia-container stable-diffusion ollama grafana prometheus loki registry clean bump-patch bump-minor bump-major install uninstall
+
+PREFIX ?= $(HOME)/.local
+bindir := $(PREFIX)/bin
+ROOT := $(abspath $(CURDIR))
+
+# Do not echo recipe lines before running (docker-compose, bump2version, etc.).
+.SILENT:
 
 help:
 	@echo "Available targets:"
@@ -27,6 +34,8 @@ help:
 	@echo "  make bump-patch                - Bump patch version (0.1.0 -> 0.1.1)"
 	@echo "  make bump-minor                - Bump minor version (0.1.0 -> 0.2.0)"
 	@echo "  make bump-major                - Bump major version (0.1.0 -> 1.0.0)"
+	@echo "  make install                   - Install vertex-studio CLI (PREFIX=$(HOME)/.local, override PREFIX/DESTDIR)"
+	@echo "  make uninstall                 - Remove installed vertex-studio (same PREFIX/DESTDIR as install)"
 
 check-docker:
 	@docker info > /dev/null 2>&1 || (echo "Docker is not running. Please start Docker and try again." && exit 1)
@@ -110,3 +119,21 @@ bump-minor:
 
 bump-major:
 	bump2version major
+
+install:
+	@install -d "$(DESTDIR)$(bindir)"
+	@sed 's|@ROOT@|$(ROOT)|g' bin/vertex-studio.in > "$(DESTDIR)$(bindir)/vertex-studio.gen"
+	@install -m 755 "$(DESTDIR)$(bindir)/vertex-studio.gen" "$(DESTDIR)$(bindir)/vertex-studio"
+	@rm -f "$(DESTDIR)$(bindir)/vertex-studio.gen"
+	@echo "Installed $(DESTDIR)$(bindir)/vertex-studio (ROOT=$(ROOT))"
+	@if [ -z "$(DESTDIR)" ]; then \
+		case ":$$PATH:" in *:"$(bindir)":*) ;; *) \
+			echo ""; \
+			echo "Note: $(bindir) is not on PATH. Example:" >&2; \
+			echo "  export PATH=\"$(bindir):$$PATH\"" >&2; \
+		;; esac; \
+	fi
+
+uninstall:
+	@rm -f "$(DESTDIR)$(bindir)/vertex-studio"
+	@echo "Removed $(DESTDIR)$(bindir)/vertex-studio (if it existed)"

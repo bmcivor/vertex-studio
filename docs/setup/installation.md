@@ -76,6 +76,21 @@ cd ~/Development/Lab
 cd vertex-studio
 ```
 
+### Developer CLI (`vertex-studio`)
+
+From the repository root, install a small launcher onto your `PATH` so you can run the same targets as `make` from any directory (for example `vertex-studio ping` instead of `make ping`).
+
+```bash
+make install
+```
+
+- **Default location**: `PREFIX` is `$(HOME)/.local`, so the command is installed to **`~/.local/bin/vertex-studio`**. Override with `make install PREFIX=/other/prefix` (installs to `$PREFIX/bin/vertex-studio`).
+- **Staging / packaging**: set **`DESTDIR`** (prepended to paths, GNU convention), e.g. `make install DESTDIR=/tmp/stage`.
+- **PATH**: If `~/.local/bin` is not on your `PATH`, `make install` prints an example `export PATH=...` line. The installer does **not** modify your shell rc files.
+- **Repository moves**: the installed script records the absolute path to the clone at install time. After moving or recloning the repo, run **`make install`** again from the new tree.
+- **Remove**: `make uninstall` (use the same **`PREFIX`** and **`DESTDIR`** you used for install).
+- **Output**: The Makefile sets **`.SILENT`**, so **`make`** targets do not echo recipe lines (e.g. `docker-compose run …`) before they run. The installed script also runs `make --no-print-directory -s -C …`, so `vertex-studio` omits directory traces as well. Command output (Ansible, Docker, etc.) is unchanged. Use **`make -n`** in the repo to preview commands without running them.
+
 ### Configure Inventory
 
 Copy and edit the host variables file:

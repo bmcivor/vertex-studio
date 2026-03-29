@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+ROOT='@ROOT@'
+exec make --no-print-directory -s -C "$ROOT" "$@"

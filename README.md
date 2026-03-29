@@ -31,6 +31,8 @@ make build   # Build Ansible Docker image
 make ping    # Verify Ansible can reach the lab host
 ```
 
+Optional: install a global **`vertex-studio`** command (same targets as `make` in this repo; wrapper uses `make --no-print-directory -s -C` so directory traces stay off) with **`make install`** (`PREFIX` defaults to `~/.local`; re-run after moving the clone). See [Installation — Developer CLI](docs/setup/installation.md#developer-cli-vertex-studio).
+
 ### Deploy
 
 - **Full stack** (bootstrap plus Tailscale, NVIDIA drivers, NVIDIA Container Toolkit, Stable Diffusion, Ollama, Taiga, MkDocs, Prometheus, Loki, Grafana, Jenkins, Minecraft Bedrock):
@@ -73,6 +75,8 @@ Jenkins may be configured for HTTPS on the Tailscale hostname; see role variable
 
 ## Makefile targets
 
+Recipes are **silent** (GNU make **`.SILENT`**: no `docker-compose …` line printed before each run). Use **`make -n <target>`** to preview commands.
+
 ```bash
 make help                      # All targets
 make build                     # Build Ansible container
@@ -90,6 +94,7 @@ make minecraft-bedrock
 make minecraft-bedrock-destroy
 make reboot / shutdown         # power.yaml
 make bump-patch|bump-minor|bump-major
+make install / make uninstall   # vertex-studio CLI (see docs/setup/installation.md)
 make clean
 ```
 
@@ -101,6 +106,7 @@ vertex-studio/
 ├── docker-compose.yaml      # Ansible control container
 ├── Dockerfile
 ├── Makefile
+├── bin/                     # vertex-studio.in (used by make install)
 ├── Jenkinsfile
 ├── pyproject.toml           # Project metadata / version
 ├── inventory/
