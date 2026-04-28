@@ -11,10 +11,27 @@
     version: "6.9.0"
   when: not taiga_dir.stat.exists
 
+- name: Resolve Tailscale IP
+  ansible.builtin.command: getent hosts {{ tailscale_hostname }}
+  register: tailscale_resolve
+  changed_when: false
+
+- name: Set tailscale_ip fact
+  ansible.builtin.set_fact:
+    tailscale_ip: "{{ tailscale_resolve.stdout.split()[0] }}"
+
 - name: Template .env configuration
   ansible.builtin.template:
     src: env.j2
     dest: /opt/taiga/.env
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: '0600'
+
+- name: Template docker-compose override
+  ansible.builtin.template:
+    src: docker-compose.override.yml.j2
+    dest: /opt/taiga/docker-compose.override.yml
     owner: "{{ ansible_user }}"
     group: docker
     mode: '0600'
