@@ -127,6 +127,7 @@ Studio can run **vertex-*** apps as container images pulled on the host. Ideas f
 | App | Purpose |
 |-----|---------|
 | **vertex-block** | First app; build → image → deploy pattern |
+| **vertex-play** | Android app + Google Play pipeline; companion repo, Jenkins on the lab |
 | **vertex-dashboard** | Single “lab home” with links to Taiga, Grafana, Jenkins, MkDocs, etc. |
 | **vertex-notify** | Notifications for builds, backups, incidents (Discord/Slack/email/webhook) |
 | **vertex-backup** | Backup orchestration for DBs, volumes, configs |
