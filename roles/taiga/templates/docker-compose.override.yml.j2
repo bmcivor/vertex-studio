@@ -1,0 +1,14 @@
+services:
+  taiga-db:
+    ports:
+      - "{{ tailscale_ip }}:5432:5432"
+  taiga-back:
+    image: "taigaio/taiga-back:{{ taiga_version }}"
+  taiga-async:
+    image: "taigaio/taiga-back:{{ taiga_version }}"
+  taiga-front:
+    image: "taigaio/taiga-front:{{ taiga_version }}"
+  taiga-events:
+    image: "taigaio/taiga-events:{{ taiga_version }}"
+  taiga-protected:
+    image: "taigaio/taiga-protected:{{ taiga_version }}"
