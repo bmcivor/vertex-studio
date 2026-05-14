@@ -4,6 +4,17 @@ USER root
 
 COPY --from=docker:cli /usr/local/bin/docker /usr/local/bin/docker
 
+ARG COMPOSE_VERSION={{ docker_compose_version }}
+RUN mkdir -p /usr/libexec/docker/cli-plugins && \
+    curl -fsSL "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-linux-x86_64" \
+        -o /usr/libexec/docker/cli-plugins/docker-compose && \
+    curl -fsSL "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-linux-x86_64.sha256" \
+        -o /tmp/docker-compose.sha256 && \
+    (cd /usr/libexec/docker/cli-plugins && \
+     sed 's| .*| docker-compose|' /tmp/docker-compose.sha256 | sha256sum -c -) && \
+    rm /tmp/docker-compose.sha256 && \
+    chmod +x /usr/libexec/docker/cli-plugins/docker-compose
+
 COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
 RUN jenkins-plugin-cli -f /usr/share/jenkins/ref/plugins.txt
 
