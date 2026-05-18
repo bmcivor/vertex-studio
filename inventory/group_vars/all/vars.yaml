@@ -15,9 +15,10 @@ jenkins_admin_user: "admin"
 jenkins_url: "https://{{ tailscale_hostname }}:8083"
 github_username: "bmcivor"
 jenkins_repos:
-  - vertex-block
-  - vertex-studio
   - taigun
+  - vertex-block
+  - vertex-play
+  - vertex-studio
 
 minecraft_bedrock_image: "itzg/minecraft-bedrock-server"
 minecraft_bedrock_version: "2026.3.1"
