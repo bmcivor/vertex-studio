@@ -12,7 +12,7 @@ jenkins_image: "jenkins/jenkins"
 jenkins_version: "2.550"
 docker_compose_version: "v5.1.3"
 jenkins_admin_user: "admin"
-jenkins_url: "https://{{ tailscale_hostname }}:8083"
+jenkins_url: "https://{{ tailscale_hostname }}"
 github_username: "bmcivor"
 jenkins_repos:
   - django-tipping
