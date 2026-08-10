@@ -41,75 +41,75 @@ check-docker:
 	@docker info > /dev/null 2>&1 || (echo "Docker is not running. Please start Docker and try again." && exit 1)
 
 build: check-docker
-	docker-compose build
+	docker compose build
 
 ping: check-docker
-	docker-compose run --rm ansible "ansible all -m ping"
+	docker compose run --rm ansible "ansible all -m ping"
 
 bootstrap: check-docker
-	docker-compose run --rm ansible "ansible-playbook playbooks/bootstrap.yaml"
+	docker compose run --rm ansible "ansible-playbook playbooks/bootstrap.yaml"
 
 bootstrap-verbose: check-docker
-	docker-compose run --rm ansible "ansible-playbook playbooks/bootstrap.yaml -vv"
+	docker compose run --rm ansible "ansible-playbook playbooks/bootstrap.yaml -vv"
 
 lab: check-docker
-	docker-compose run --rm ansible "ansible-playbook playbooks/lab.yaml"
+	docker compose run --rm ansible "ansible-playbook playbooks/lab.yaml"
 
 taiga: check-docker
-	docker-compose run --rm ansible "ansible-playbook playbooks/taiga.yaml"
+	docker compose run --rm ansible "ansible-playbook playbooks/taiga.yaml"
 
 mkdocs: check-docker
-	docker-compose run --rm ansible "ansible-playbook playbooks/mkdocs.yaml"
+	docker compose run --rm ansible "ansible-playbook playbooks/mkdocs.yaml"
 
 tailscale: check-docker
-	docker-compose run --rm ansible "ansible-playbook playbooks/tailscale.yaml"
+	docker compose run --rm ansible "ansible-playbook playbooks/tailscale.yaml"
 
 nvidia: check-docker
-	docker-compose run --rm ansible "ansible-playbook playbooks/nvidia.yaml"
+	docker compose run --rm ansible "ansible-playbook playbooks/nvidia.yaml"
 
 nvidia-container: check-docker
-	docker-compose run --rm ansible "ansible-playbook playbooks/nvidia-container.yaml"
+	docker compose run --rm ansible "ansible-playbook playbooks/nvidia-container.yaml"
 
 stable-diffusion: check-docker
-	docker-compose run --rm ansible "ansible-playbook playbooks/stable-diffusion.yaml"
+	docker compose run --rm ansible "ansible-playbook playbooks/stable-diffusion.yaml"
 
 ollama: check-docker
-	docker-compose run --rm ansible "ansible-playbook playbooks/ollama.yaml"
+	docker compose run --rm ansible "ansible-playbook playbooks/ollama.yaml"
 
 grafana: check-docker
-	docker-compose run --rm ansible "ansible-playbook playbooks/grafana.yaml"
+	docker compose run --rm ansible "ansible-playbook playbooks/grafana.yaml"
 
 prometheus: check-docker
-	docker-compose run --rm ansible "ansible-playbook playbooks/prometheus.yaml"
+	docker compose run --rm ansible "ansible-playbook playbooks/prometheus.yaml"
 
 loki: check-docker
-	docker-compose run --rm ansible "ansible-playbook playbooks/loki.yaml"
+	docker compose run --rm ansible "ansible-playbook playbooks/loki.yaml"
 
 registry: check-docker
-	docker-compose run --rm ansible "ansible-playbook playbooks/registry.yaml"
+	docker compose run --rm ansible "ansible-playbook playbooks/registry.yaml"
 
 jenkins: check-docker
-	docker-compose run --rm ansible "ansible-playbook playbooks/jenkins.yaml"
+	docker compose run --rm ansible "ansible-playbook playbooks/jenkins.yaml"
 
 minecraft-bedrock: check-docker
-	docker-compose run --rm ansible "ansible-playbook playbooks/minecraft-bedrock.yaml -e minecraft_bedrock_destroy=false"
+	docker compose run --rm ansible "ansible-playbook playbooks/minecraft-bedrock.yaml -e minecraft_bedrock_destroy=false"
 
 minecraft-bedrock-destroy: check-docker
-	docker-compose run --rm ansible "ansible-playbook playbooks/minecraft-bedrock.yaml -e minecraft_bedrock_destroy=true"
+	docker compose run --rm ansible "ansible-playbook playbooks/minecraft-bedrock.yaml -e minecraft_bedrock_destroy=true"
 
 clean:
-	@if docker-compose ps -q 2>/dev/null | grep -q .; then \
-		docker-compose down; \
-		docker-compose rm -f; \
+	@if docker compose ps -q 2>/dev/null | grep -q .; then \
+		docker compose down; \
+		docker compose rm -f; \
 	else \
 		echo "No containers to clean" >&2; \
 	fi
 
 reboot: check-docker
-	docker-compose run --rm ansible "ansible-playbook playbooks/power.yaml -e power_state=reboot"
+	docker compose run --rm ansible "ansible-playbook playbooks/power.yaml -e power_state=reboot"
 
 shutdown: check-docker
-	docker-compose run --rm ansible "ansible-playbook playbooks/power.yaml -e power_state=shutdown"
+	docker compose run --rm ansible "ansible-playbook playbooks/power.yaml -e power_state=shutdown"
 
 bump-patch:
 	bump2version patch
