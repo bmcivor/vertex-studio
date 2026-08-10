@@ -1,0 +1,8 @@
+.git
+.gitignore
+*.md
+LICENSE
+site/
+__pycache__/
+*.pyc
+.DS_Store
