@@ -2,12 +2,15 @@
 - name: Minecraft Bedrock Server Management
   hosts: labserver
   become: true
+  vars:
+    minecraft_bedrock_destroy: false
   tasks:
     - name: Destroy Minecraft Bedrock Server
       ansible.builtin.command:
         cmd: docker compose down -v
         chdir: /opt/minecraft-bedrock
-      when: minecraft_bedrock_destroy == 'true'
+        removes: /opt/minecraft-bedrock/docker-compose.yaml
+      when: minecraft_bedrock_destroy | bool
   roles:
     - role: minecraft-bedrock
-      when: minecraft_bedrock_destroy == 'false'
+      when: not (minecraft_bedrock_destroy | bool)

@@ -20,7 +20,7 @@ Provides a single entry point to deploy all platform components in the correct o
 10. **loki.yaml** - Deploy Loki and Promtail
 11. **grafana.yaml** - Deploy Grafana monitoring dashboard
 12. **jenkins.yaml** - Deploy Jenkins CI server
-13. **minecraft-bedrock.yaml** - Deploy Minecraft Bedrock server (with `minecraft_bedrock_destroy=false`)
+13. **minecraft-bedrock.yaml** - Deploy Minecraft Bedrock server (defaults to `minecraft_bedrock_destroy: false`)
 
 ## Usage
 
