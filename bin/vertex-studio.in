@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 ROOT='@ROOT@'
+if [ ! -d "$ROOT" ]; then
+  echo "vertex-studio: clone not found at $ROOT. Re-run 'make install' from the repository." >&2
+  exit 1
+fi
 exec make --no-print-directory -s -C "$ROOT" "$@"

@@ -2,6 +2,16 @@
 
 This project uses [bump2version](https://github.com/c4urself/bump2version) for semantic versioning.
 
+## Prerequisites
+
+`bump2version` runs on your machine, not inside the Ansible control container, so it must be installed locally:
+
+```bash
+pipx install bump2version
+```
+
+The `make bump-*` targets check for it and fail with instructions if it is missing.
+
 ## Version Format
 
 Follows semantic versioning: `MAJOR.MINOR.PATCH`
