@@ -12,12 +12,13 @@ services:
       - grafana-data:/var/lib/grafana
       - grafana-config:/etc/grafana
     networks:
-      - default
+      - monitoring
 
 volumes:
   grafana-data:
   grafana-config:
 
 networks:
-  default:
-    name: grafana-network
+  monitoring:
+    name: monitoring-network
+    external: true

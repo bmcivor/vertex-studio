@@ -1,4 +1,13 @@
 ---
+- name: Ensure monitoring network exists
+  ansible.builtin.command:
+    cmd: docker network create monitoring-network
+  register: monitoring_network
+  changed_when: monitoring_network.rc == 0
+  failed_when: >-
+    monitoring_network.rc != 0
+    and 'already exists' not in monitoring_network.stderr
+
 - name: Create grafana directory
   ansible.builtin.file:
     path: /opt/grafana
