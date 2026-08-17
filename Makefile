@@ -1,4 +1,4 @@
-.PHONY: help check-docker build ping bootstrap bootstrap-verbose lab taiga mkdocs tailscale nvidia nvidia-container stable-diffusion ollama grafana prometheus loki registry clean bump-patch bump-minor bump-major install uninstall
+.PHONY: help check-docker check-bump2version build ping bootstrap bootstrap-verbose lab taiga mkdocs tailscale nvidia nvidia-container stable-diffusion ollama grafana prometheus loki registry jenkins minecraft-bedrock minecraft-bedrock-destroy clean reboot shutdown bump-patch bump-minor bump-major install uninstall
 
 PREFIX ?= $(HOME)/.local
 bindir := $(PREFIX)/bin
@@ -39,6 +39,9 @@ help:
 
 check-docker:
 	@docker info > /dev/null 2>&1 || (echo "Docker is not running. Please start Docker and try again." && exit 1)
+
+check-bump2version:
+	@command -v bump2version > /dev/null 2>&1 || (echo "bump2version is not installed. Run: pipx install bump2version" && exit 1)
 
 build: check-docker
 	docker compose build
@@ -97,13 +100,8 @@ minecraft-bedrock: check-docker
 minecraft-bedrock-destroy: check-docker
 	docker compose run --rm ansible "ansible-playbook playbooks/minecraft-bedrock.yaml -e minecraft_bedrock_destroy=true"
 
-clean:
-	@if docker compose ps -q 2>/dev/null | grep -q .; then \
-		docker compose down; \
-		docker compose rm -f; \
-	else \
-		echo "No containers to clean" >&2; \
-	fi
+clean: check-docker
+	docker compose down --rmi local --remove-orphans
 
 reboot: check-docker
 	docker compose run --rm ansible "ansible-playbook playbooks/power.yaml -e power_state=reboot"
@@ -111,20 +109,21 @@ reboot: check-docker
 shutdown: check-docker
 	docker compose run --rm ansible "ansible-playbook playbooks/power.yaml -e power_state=shutdown"
 
-bump-patch:
+bump-patch: check-bump2version
 	bump2version patch
 
-bump-minor:
+bump-minor: check-bump2version
 	bump2version minor
 
-bump-major:
+bump-major: check-bump2version
 	bump2version major
 
 install:
 	@install -d "$(DESTDIR)$(bindir)"
-	@sed 's|@ROOT@|$(ROOT)|g' bin/vertex-studio.in > "$(DESTDIR)$(bindir)/vertex-studio.gen"
-	@install -m 755 "$(DESTDIR)$(bindir)/vertex-studio.gen" "$(DESTDIR)$(bindir)/vertex-studio"
-	@rm -f "$(DESTDIR)$(bindir)/vertex-studio.gen"
+	@tmp="$$(mktemp)"; \
+		trap 'rm -f "$$tmp"' EXIT; \
+		sed 's|@ROOT@|$(ROOT)|g' bin/vertex-studio.in > "$$tmp" && \
+		install -m 755 "$$tmp" "$(DESTDIR)$(bindir)/vertex-studio"
 	@echo "Installed $(DESTDIR)$(bindir)/vertex-studio (ROOT=$(ROOT))"
 	@if [ -z "$(DESTDIR)" ]; then \
 		case ":$$PATH:" in *:"$(bindir)":*) ;; *) \
