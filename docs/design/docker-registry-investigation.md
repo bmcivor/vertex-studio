@@ -254,7 +254,7 @@ branchSources {
 
 **Verify:** The full form is provided by the github-branch-source plugin's Job DSL extension. Confirm the plugin version (1967.vdea_d580c1a_b_a_) supports this. If the shorthand is the only form available in our Job DSL context, a `configure` block may be needed to inject the trait XML directly.
 
-**Second assumption:** Discovering tags is not enough. The Branch API plugin does **not** build tags by default. Even with `gitHubTagDiscovery`, tag items may be created but not built. The **basic-branch-build-strategies** plugin provides `buildTags` to enable building tag discoveries. Not currently in plugins.txt. **Verify:** Does github-branch-source's tag discovery alone trigger builds, or do we need basic-branch-build-strategies?
+**Second assumption:** Discovering tags is not enough. The Branch API plugin does **not** build tags by default. Even with `gitHubTagDiscovery`, tag items may be created but not built. The **basic-branch-build-strategies** plugin provides `buildTags` to enable building tag discoveries. **Resolved:** the plugin is pinned in `roles/jenkins/files/plugins.txt`, `gitHubTagDiscovery()` is in the deployed JCasC template, and the root `Jenkinsfile` implements the tag-gated build-and-push flow described in this document.
 
 ### 4. Jenkins
 

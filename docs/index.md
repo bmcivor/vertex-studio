@@ -53,4 +53,6 @@ After deployment, services will be accessible at:
 - Ollama (LLM API): `http://<lab-ip>:11434`
 - Stable Diffusion WebUI: `http://<lab-ip>:7860`
 - Stable Diffusion gallery: `http://<lab-ip>:8081`
+- Docker Registry: `http://<lab-ip>:5000` (optional, `make registry`)
+- Registry UI: `http://<lab-ip>:8084` (optional, `make registry`)
 - Minecraft Bedrock: `<lab-ip>:19132` (UDP; add server in Bedrock client)

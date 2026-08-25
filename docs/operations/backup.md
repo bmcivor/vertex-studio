@@ -8,7 +8,6 @@
 
 - Taiga PostgreSQL database
 - Taiga media files
-- GitLab data (future)
 - Configuration files
 - SSL certificates (future)
 

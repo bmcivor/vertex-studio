@@ -56,23 +56,32 @@ Save and exit. Changes take effect immediately.
 
 On your dev machine:
 
+Use the IP address you noted in step 1. The name `shadowlands` does not resolve yet: the
+hostname is only changed by the bootstrap playbook, which needs working SSH first, and
+MagicDNS is not available until Tailscale is installed by `make tailscale`.
+
 ```bash
 # Generate SSH key if you don't have one
 ssh-keygen -t ed25519
 
 # Copy key to lab machine
-ssh-copy-id lab-owner@shadowlands
+ssh-copy-id lab-owner@192.168.20.15
 
 # Test connection
-ssh lab-owner@shadowlands
+ssh lab-owner@192.168.20.15
 ```
 
 You should be able to SSH without entering a password. If this doesn't work, Ansible will not be able to connect.
 
+Once bootstrap and Tailscale have run, the host answers to `shadowlands` and you can switch
+`ansible_host` over to it.
+
 ### Clone Repository
 
 ```bash
+mkdir -p ~/Development/Lab
 cd ~/Development/Lab
+git clone git@github.com:bmcivor/vertex-studio.git
 cd vertex-studio
 ```
 
@@ -102,6 +111,21 @@ cp inventory/host_vars/labserver.yaml.example inventory/host_vars/labserver.yaml
 Update `inventory/host_vars/labserver.yaml` with:
 - `ansible_host`: actual lab machine hostname (e.g., shadowlands)
 - `ansible_user`: username you created during Fedora install
+
+### Create the Vault Password File
+
+`ansible.cfg` sets `vault_password_file = .vault_password`, and the encrypted
+`inventory/group_vars/all/vault.yaml` is committed to the repository. The password file itself
+is gitignored, so it does not come with the clone and you must create it before anything runs.
+Without it, every target fails, including `make ping`.
+
+```bash
+install -m 600 /dev/null .vault_password
+```
+
+Then open `.vault_password` in an editor and put the vault password on the first line. Creating
+it with a shell redirect instead writes the password into your shell history and leaves the
+file world-readable.
 
 ### Build Ansible Container
 

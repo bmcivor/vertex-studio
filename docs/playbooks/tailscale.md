@@ -41,9 +41,17 @@ ssh lab-owner@shadowlands
 
 ## Updating Ansible Inventory
 
-Once Tailscale is working, you can update `inventory/hosts` to use the Tailscale IP for future Ansible runs from anywhere:
+Once Tailscale is working, update `inventory/host_vars/labserver.yaml` so Ansible reaches the
+host over the tailnet from anywhere:
 
-```ini
-[lab]
-labserver ansible_host=100.x.x.x
+```yaml
+ansible_host: shadowlands.tail252efc.ts.net
+ansible_user: lab-owner
 ```
+
+Prefer the MagicDNS hostname over the raw `100.x.x.x` address. The Ansible control container is
+already pointed at MagicDNS in `docker-compose.yaml`, which sets the Tailscale resolver and a
+tailnet search domain.
+
+The host list itself lives in `inventory/lab.yaml` in YAML format, with a single host
+`labserver` in the `all` group.

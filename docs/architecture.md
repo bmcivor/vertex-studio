@@ -49,6 +49,8 @@ Internet
               ├─> Ollama (port 11434)
               ├─> Stable Diffusion WebUI (port 7860)
               ├─> Stable Diffusion gallery (port 8081)
+              ├─> Docker Registry (port 5000, optional)
+              ├─> Registry UI (port 8084, optional)
               └─> Minecraft Bedrock (port 19132/udp)
 ```
 

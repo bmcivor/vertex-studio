@@ -46,7 +46,7 @@ Save and join. The server is reachable on the host’s port 19132 (UDP).
 
 ## Where the World Lives
 
-World and server config live in the Docker named volume `minecraft-bedrock-data`, used by the container at `/data`. The volume is on the lab host’s disk; it persists across container restarts and host reboots. To include it in backups, see [Backup and Restore](../operations/backup.md) and add the volume’s data path (e.g. under Docker’s volume storage on the host) to your backup procedure.
+World and server config live in a Docker named volume, used by the container at `/data`. The compose file declares it as `minecraft-bedrock-data`; Docker prefixes it with the compose project name, so on the host it is `minecraft-bedrock_minecraft-bedrock-data`, which is the name to use with `docker volume` commands. The volume is on the lab host’s disk; it persists across container restarts and host reboots. To include it in backups, see [Backup and Restore](../operations/backup.md) and add the volume’s data path (e.g. under Docker’s volume storage on the host) to your backup procedure.
 
 ## Recreate Flow
 
