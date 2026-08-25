@@ -33,6 +33,16 @@ nav:
     - Stable Diffusion: playbooks/stable-diffusion.md
     - Ollama: playbooks/ollama.md
     - Jenkins: playbooks/jenkins.md
+    - Grafana: playbooks/grafana.md
+    - Prometheus: playbooks/prometheus.md
+    - Loki: playbooks/loki.md
+    - Registry: playbooks/registry.md
+    - Minecraft Bedrock: playbooks/minecraft-bedrock.md
+  - Design:
+    - Jenkins GitHub Integration: design/jenkins-github-integration.md
+    - Docker Registry Investigation: design/docker-registry-investigation.md
+    - Local Pipeline: design/local-pipeline.md
+    - Minecraft Bedrock: design/minecraft-bedrock.md
   - Workflow:
     - Ticket Standards: workflow/tickets.md
   - Operations:

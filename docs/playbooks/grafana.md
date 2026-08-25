@@ -52,5 +52,5 @@ Data persists across container restarts.
 ssh shadowlands "cd /opt/grafana && docker compose down"
 
 # Remove data (optional - this deletes all dashboards/config)
-ssh shadowlands "docker volume rm grafana-data grafana-config"
+ssh shadowlands "docker volume rm grafana_grafana-data grafana_grafana-config"
 ```

@@ -6,6 +6,7 @@ All services are hosted on `shadowlands` and accessible via Tailscale VPN using 
 
 | Service | URL | Description |
 |---------|-----|-------------|
+| Taiga | `http://shadowlands.tail252efc.ts.net:9000` | Project management |
 | Jenkins | `https://shadowlands.tail252efc.ts.net` | CI/CD server |
 | Grafana | `http://shadowlands.tail252efc.ts.net:3000` | Monitoring dashboards |
 | Prometheus | `http://shadowlands.tail252efc.ts.net:9091` | Metrics collection |

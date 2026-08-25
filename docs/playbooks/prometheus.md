@@ -7,7 +7,7 @@ Deploys Prometheus and cAdvisor to collect Docker container and host metrics.
 - Deploys Prometheus metrics database
 - Deploys cAdvisor to collect Docker container metrics
 - Configures Prometheus to scrape cAdvisor automatically
-- Exposes Prometheus UI on port 9090
+- Exposes Prometheus UI on port 9091 (container port 9090)
 - Exposes cAdvisor UI on port 8082
 
 ## Usage
@@ -63,5 +63,5 @@ Prometheus stores metrics in a Docker volume. Default retention is 15 days. Data
 ssh shadowlands "cd /opt/prometheus && docker compose down"
 
 # Remove data (optional - deletes all metrics)
-ssh shadowlands "docker volume rm prometheus-data"
+ssh shadowlands "docker volume rm prometheus_prometheus-data"
 ```

@@ -1,5 +1,19 @@
 # Jenkins + GitHub Integration Design
 
+> **Status: implemented.** This is the original design document, kept for the reasoning and the
+> sources behind each decision. It is not a description of the current deployment, and the
+> implementation differs from it in three places:
+>
+> - Tailscale Funnel is enabled by hand on the host, not by an Ansible task. The
+>   `Enable Tailscale Funnel for Jenkins` task proposed below does not exist in
+>   `roles/jenkins`. See [Jenkins](../playbooks/jenkins.md) for the manual step.
+> - The JCasC job definition uses the full `branchSource { source { github { … traits { … } } } }`
+>   form rather than the shorthand shown here.
+> - `jenkins_repos` covers five repositories, not the single one used in the examples.
+>
+> For what is actually deployed, read `roles/jenkins/` and
+> [the Jenkins playbook page](../playbooks/jenkins.md).
+
 ## Goal
 
 Deploy Jenkins on shadowlands via Ansible, configured to automatically run
