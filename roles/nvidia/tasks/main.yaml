@@ -1,12 +1,23 @@
 ---
-- name: Remove NVIDIA official packages if present
-  shell: dnf remove -y 'nvidia-*' 2>/dev/null || true
-  changed_when: true
+- name: Find NVIDIA official CUDA repo files
+  find:
+    paths: /etc/yum.repos.d
+    patterns: 'cuda-fedora*.repo'
+  register: nvidia_official_repos
 
-- name: Remove NVIDIA official repo if present
-  file:
-    path: /etc/yum.repos.d/cuda-fedora42.repo
+- name: Remove NVIDIA official packages if the official repo is present
+  dnf:
+    name: 'nvidia-*'
     state: absent
+  when: nvidia_official_repos.matched > 0
+
+- name: Remove NVIDIA official repo files
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ nvidia_official_repos.files }}"
+  loop_control:
+    label: "{{ item.path }}"
 
 - name: Install RPM Fusion free repository
   dnf:
