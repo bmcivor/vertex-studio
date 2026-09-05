@@ -31,8 +31,9 @@
     owner: "{{ ansible_user }}"
     group: docker
     mode: '0644'
+  notify: Restart Prometheus
 
 - name: Start Prometheus and cAdvisor
   ansible.builtin.command:
-    cmd: docker compose up -d --force-recreate
+    cmd: docker compose up -d
     chdir: /opt/prometheus
