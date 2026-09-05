@@ -44,6 +44,7 @@
     owner: "{{ ansible_user }}"
     group: docker
     mode: '0644'
+  notify: Restart Jenkins
 
 - name: Create .env file for secrets
   ansible.builtin.template:
@@ -63,5 +64,5 @@
 
 - name: Start Jenkins
   ansible.builtin.command:
-    cmd: docker compose up -d --force-recreate
+    cmd: docker compose up -d
     chdir: /opt/jenkins

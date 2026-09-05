@@ -42,5 +42,5 @@
 
 - name: Build and start MkDocs
   ansible.builtin.command:
-    cmd: docker compose up -d --build --force-recreate
+    cmd: docker compose up -d --build
     chdir: /opt/mkdocs
