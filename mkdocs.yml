@@ -49,6 +49,7 @@ nav:
     - Power: operations/power.md
     - Versioning: operations/versioning.md
     - Backup: operations/backup.md
+    - Secrets: operations/secrets.md
     - Troubleshooting: operations/troubleshooting.md
 
 markdown_extensions:

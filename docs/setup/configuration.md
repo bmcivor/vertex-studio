@@ -60,11 +60,15 @@ Ansible Vault is already in use and is not optional. `ansible.cfg` sets
 create it before running anything: see
 [Create the Vault Password File](installation.md#create-the-vault-password-file).
 
-Edit the vault through the control container, which already has the password file mounted:
+Edit the vault through the control container, which already has the password file mounted and
+sets `EDITOR`:
 
 ```bash
 docker compose run --rm ansible "ansible-vault edit inventory/group_vars/all/vault.yaml"
 ```
+
+Rotating a secret and the failure modes that come with it are covered in
+[Secrets](../operations/secrets.md).
 
 Vaulted variables are referenced from templates like any other variable. `roles/jenkins` is the
 worked example: it templates `jenkins_admin_password` and `github_pat` into a `0600` `.env`
