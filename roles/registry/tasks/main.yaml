@@ -37,5 +37,5 @@
 
 - name: Start registry
   ansible.builtin.command:
-    cmd: docker compose up -d --force-recreate
+    cmd: docker compose up -d
     chdir: /opt/registry

@@ -26,5 +26,5 @@
 
 - name: Start Grafana
   ansible.builtin.command:
-    cmd: docker compose up -d --force-recreate
+    cmd: docker compose up -d
     chdir: /opt/grafana

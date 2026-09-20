@@ -31,6 +31,7 @@
     owner: "{{ ansible_user }}"
     group: docker
     mode: '0644'
+  notify: Restart Loki
 
 - name: Copy promtail-config.yaml
   ansible.builtin.copy:
@@ -39,8 +40,9 @@
     owner: "{{ ansible_user }}"
     group: docker
     mode: '0644'
+  notify: Restart Promtail
 
 - name: Start Loki and Promtail
   ansible.builtin.command:
-    cmd: docker compose up -d --force-recreate
+    cmd: docker compose up -d
     chdir: /opt/loki

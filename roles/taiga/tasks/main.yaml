@@ -43,7 +43,7 @@
 
 - name: Start Taiga services
   ansible.builtin.command:
-    cmd: docker compose up -d --force-recreate --remove-orphans
+    cmd: docker compose up -d --remove-orphans
     chdir: /opt/taiga
 
 - name: Wait for RabbitMQ services to be ready
