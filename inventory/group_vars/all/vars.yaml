@@ -21,6 +21,7 @@ jenkins_repos:
   - vertex-play
   - vertex-studio
   - glazr
+  - vertex-code
 
 minecraft_bedrock_image: "itzg/minecraft-bedrock-server"
 minecraft_bedrock_version: "2026.3.1"
