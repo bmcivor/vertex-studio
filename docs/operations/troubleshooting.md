@@ -28,6 +28,20 @@
 3. Check disk space: `df -h`
 4. Verify Docker service is running: `systemctl status docker`
 
+### Jenkins branch indexing fails with 401 Bad credentials
+
+**Problem**: A multibranch job fails immediately with
+`org.kohsuke.github.HttpException: {"message": "Bad credentials", "status": "401"}`, and the
+scan log ends with `Failed to recompute children`.
+
+This reads like a problem with the repository being indexed, but it is not — it affects every
+repository at once. The GitHub token has expired.
+
+**Solution**: rotate it. See [Rotating the GitHub token](secrets.md#rotating-the-github-token).
+
+Note that the vault is not read at runtime: the token is baked into `/opt/jenkins/.env` when
+the playbook runs, so `make jenkins` has to run after the vault is changed.
+
 ### Firewall Blocking Access
 
 **Problem**: Cannot access services from dev machine
