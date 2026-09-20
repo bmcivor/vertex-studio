@@ -1,0 +1,96 @@
+---
+# Only one process can hold 24GB of VRAM, and Ollama takes the card on boot
+# because its unit is enabled. It has to be stopped and disabled before
+# llama-server can bind the GPU. Nothing in the lab has used Ollama since the
+# image-generation containers were removed.
+- name: Stop and disable Ollama so the GPU is free
+  ansible.builtin.systemd:
+    name: ollama
+    state: stopped
+    enabled: false
+  failed_when: false
+
+- name: Create llama directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: '0755'
+  loop:
+    - "{{ llama_install_dir }}"
+    - "{{ llama_models_dir }}"
+
+# Resolved at deploy time rather than hardcoded, so the address is never wrong
+# after a tailnet change. Same pattern as the taiga role.
+- name: Resolve Tailscale IP
+  ansible.builtin.command: getent hosts {{ tailscale_hostname }}
+  register: tailscale_resolve
+  changed_when: false
+
+- name: Set llama_bind_address fact
+  ansible.builtin.set_fact:
+    llama_bind_address: "{{ tailscale_resolve.stdout.split()[0] }}"
+
+- name: Find the selected model in the candidate list
+  ansible.builtin.set_fact:
+    llama_selected: >-
+      {{ llama_models | selectattr('name', 'equalto', llama_model_file)
+         | list | first | default(None) }}
+
+- name: Fail clearly when the selected model is not a known candidate
+  ansible.builtin.fail:
+    msg: >-
+      llama_model_file is "{{ llama_model_file }}", which is not in llama_models.
+      Add it there with its repo and sha256 so the role can fetch and verify it.
+      Known: {{ llama_models | map(attribute='name') | join(', ') }}
+  when: llama_selected is none
+
+# Idempotent by checksum: get_url verifies an existing file and skips the
+# download when it matches, so re-running costs nothing. Async because this is
+# 16-18GB and would otherwise hold the connection open long enough to time out.
+- name: Download the selected model
+  ansible.builtin.get_url:
+    url: "https://huggingface.co/{{ llama_selected.repo }}/resolve/main/{{ llama_selected.name }}"
+    dest: "{{ llama_models_dir }}/{{ llama_selected.name }}"
+    checksum: "sha256:{{ llama_selected.sha256 }}"
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: '0644'
+  async: "{{ llama_download_timeout }}"
+  poll: 30
+
+- name: Template docker-compose.yaml
+  ansible.builtin.template:
+    src: docker-compose.yaml.j2
+    dest: "{{ llama_install_dir }}/docker-compose.yaml"
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: '0644'
+  notify: Restart llama
+
+- name: Start llama-server
+  ansible.builtin.command:
+    cmd: docker compose up -d
+    chdir: "{{ llama_install_dir }}"
+  register: llama_compose
+  changed_when: "'Started' in llama_compose.stderr or 'Created' in llama_compose.stderr"
+
+# The server loads 17GB into VRAM before it answers, so it is not ready the
+# moment the container is up.
+- name: Wait for the server to report healthy
+  ansible.builtin.uri:
+    url: "http://{{ llama_bind_address }}:{{ llama_port }}/health"
+    status_code: 200
+  register: llama_health
+  until: llama_health.status == 200
+  retries: 30
+  delay: 5
+
+- name: Report what is being served
+  ansible.builtin.debug:
+    msg: >-
+      llama-server on http://{{ tailscale_hostname }}:{{ llama_port }}
+      serving {{ llama_model_file }}
+      at {{ llama_context_length }} context,
+      KV {{ llama_cache_type_k }}/{{ llama_cache_type_v }}

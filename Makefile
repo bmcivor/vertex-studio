@@ -1,4 +1,4 @@
-.PHONY: help check-docker check-bump2version build ping bootstrap bootstrap-verbose lab taiga mkdocs tailscale nvidia nvidia-container stable-diffusion ollama grafana prometheus loki registry jenkins minecraft-bedrock minecraft-bedrock-destroy clean reboot shutdown bump-patch bump-minor bump-major install uninstall
+.PHONY: help check-docker check-bump2version build ping bootstrap bootstrap-verbose lab taiga mkdocs tailscale nvidia nvidia-container stable-diffusion ollama llama grafana prometheus loki registry jenkins minecraft-bedrock minecraft-bedrock-destroy clean reboot shutdown bump-patch bump-minor bump-major install uninstall
 
 PREFIX ?= $(HOME)/.local
 bindir := $(PREFIX)/bin
@@ -20,7 +20,8 @@ help:
 	@echo "  make nvidia                    - Install NVIDIA drivers and CUDA"
 	@echo "  make nvidia-container          - Install NVIDIA container toolkit for Docker GPU"
 	@echo "  make stable-diffusion          - Deploy Stable Diffusion WebUI with SDXL"
-	@echo "  make ollama                    - Install Ollama and pull LLaVA model"
+	@echo "  make ollama                    - Install Ollama and pull LLaVA model (superseded by llama)"
+	@echo "  make llama                     - Serve a local coding model on the GPU"
 	@echo "  make grafana                   - Deploy Grafana monitoring dashboard"
 	@echo "  make prometheus                - Deploy Prometheus and cAdvisor for metrics"
 	@echo "  make loki                      - Deploy Loki and Promtail for log collection"
@@ -78,6 +79,9 @@ stable-diffusion: check-docker
 
 ollama: check-docker
 	docker compose run --rm ansible "ansible-playbook playbooks/ollama.yaml"
+
+llama: check-docker
+	docker compose run --rm ansible "ansible-playbook playbooks/llama.yaml"
 
 grafana: check-docker
 	docker compose run --rm ansible "ansible-playbook playbooks/grafana.yaml"

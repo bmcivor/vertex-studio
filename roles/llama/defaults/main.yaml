@@ -1,0 +1,86 @@
+---
+# Serving configuration for llama-server.
+#
+# These exist as variables because tickets 004 and 005 vary them and measure the
+# result. A configuration changed by hand-editing a script is not reproducible,
+# and a measurement taken through one means nothing.
+#
+# Note which of these actually need a redeploy. The model file, context length,
+# GPU layers and KV cache types are server flags, so changing them means running
+# the playbook again. The sampling values below are only *defaults* - a client
+# can override every one of them per request, so the sampling A/B in ticket 004
+# does not need a playbook run at all.
+
+llama_install_dir: /opt/llama
+llama_models_dir: /opt/llama/models
+
+# Published on the tailnet address only. 8080 is taken by MkDocs.
+llama_port: 8088
+
+# Candidate models the role knows how to fetch. Ticket 005 swaps between them by
+# changing llama_model_file below; only the selected one is downloaded, and
+# whatever is already on disk stays there so a bake-off can be re-run.
+#
+# Sizes and checksums read from the HuggingFace API on 2026-09-20, not copied
+# from a blog. Both fit 24GB with room for context; the MoE's Q4_K_M does not
+# (22.13GB leaves about 2GB for KV cache) which is why IQ4_XS is listed instead.
+llama_models:
+  - name: Qwen3.6-27B-Q4_K_M.gguf
+    repo: unsloth/Qwen3.6-27B-GGUF
+    sha256: 5ed60d0af4650a854b1755bd392f9aef4872643dc25a254bc68043fa638392a0
+  - name: Qwen3.6-35B-A3B-UD-IQ4_XS.gguf
+    repo: unsloth/Qwen3.6-35B-A3B-GGUF
+    sha256: 649d7508507b84638732c4f52c24c8b15843c6dca2f3ff793ae07c14a67ebbb3
+
+# Which model to serve. Must be one of the names above.
+#
+# Qwen3.6-27B is the recommendation from the 2026-09-20 research: the only model
+# that fits this card with an independent, decontaminated coding measurement
+# behind it (SWE-rebench 31.2% +/- 1.68, rank 15, verified against the
+# leaderboard directly). Confidence is low-to-moderate and ticket 005 decides it
+# properly.
+llama_model_file: Qwen3.6-27B-Q4_K_M.gguf
+
+# Downloads are 16-18GB, so the fetch runs asynchronously to avoid holding the
+# connection open. Raise if the link is slow.
+llama_download_timeout: 7200
+
+# Server flags. Changing any of these requires a redeploy.
+#
+# 64K is the working ceiling, measured at 20,918 MiB of 24,576 with F16 KV on
+# the 3090. It is a decode-performance limit rather than a VRAM one: throughput
+# collapses past roughly 80K positions. Ticket 004 sets the final value.
+llama_context_length: 65536
+llama_n_gpu_layers: 99
+llama_flash_attention: true
+
+# Never quantise the K cache aggressively. K-cache error moves where attention
+# points; V-cache error averages out. F16 for both until ticket 004 says
+# otherwise.
+llama_cache_type_k: f16
+llama_cache_type_v: f16
+
+# Required for tool calling to work at all, and for the model's chat template to
+# be applied.
+llama_use_jinja: true
+
+# Without this the server silently slides the context window instead of
+# reporting that the request did not fit, which would corrupt a measurement.
+llama_no_context_shift: true
+
+# Optional replacement chat template. The research recommends one for
+# Qwen3.6-27B, whose shipped template emits non-standard tool calls. Left empty
+# means use the template baked into the GGUF. Set to a path inside the container.
+llama_chat_template_file: ''
+
+# Sampling defaults only. A client overrides these per request.
+#
+# presence_penalty is deliberately 0.0 and not the 1.5 that ships in the general
+# profile for this family: 1.5 penalises token reuse, and an edit anchor is
+# almost entirely tokens reproduced verbatim from the file. That is a mechanism,
+# not a measurement, and it is open parameter O6.
+llama_temperature: 0.6
+llama_top_p: 0.95
+llama_top_k: 20
+llama_min_p: 0.0
+llama_presence_penalty: 0.0

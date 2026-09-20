@@ -1,0 +1,6 @@
+---
+- name: Serve a local coding model on the lab GPU
+  hosts: labserver
+  become: true
+  roles:
+    - llama
