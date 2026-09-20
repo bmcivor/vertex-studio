@@ -1,0 +1,6 @@
+---
+- name: Restart Jenkins
+  ansible.builtin.command:
+    cmd: docker compose restart jenkins
+    chdir: /opt/jenkins
+  changed_when: true

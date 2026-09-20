@@ -1,0 +1,12 @@
+---
+- name: Restart Loki
+  ansible.builtin.command:
+    cmd: docker compose restart loki
+    chdir: /opt/loki
+  changed_when: true
+
+- name: Restart Promtail
+  ansible.builtin.command:
+    cmd: docker compose restart promtail
+    chdir: /opt/loki
+  changed_when: true
