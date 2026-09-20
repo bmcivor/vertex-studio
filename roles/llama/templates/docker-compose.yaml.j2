@@ -1,0 +1,61 @@
+services:
+  llama:
+    image: "{{ llama_image }}:{{ llama_version }}"
+    container_name: llama
+    restart: unless-stopped
+    ports:
+      # Tailnet address only. Binding 0.0.0.0 would also expose the GPU to every
+      # device on the LAN, including devices not on the tailnet.
+      - "{{ llama_bind_address }}:{{ llama_port }}:8080"
+    volumes:
+      - "{{ llama_models_dir }}:/models:z"
+{% if llama_chat_template_file | length > 0 %}
+      - "{{ llama_install_dir }}/templates:/templates:z"
+{% endif %}
+    command:
+      - "-m"
+      - "/models/{{ llama_model_file }}"
+      - "--host"
+      - "0.0.0.0"
+      - "--port"
+      - "8080"
+      - "-ngl"
+      - "{{ llama_n_gpu_layers }}"
+      - "-c"
+      - "{{ llama_context_length }}"
+      - "-ctk"
+      - "{{ llama_cache_type_k }}"
+      - "-ctv"
+      - "{{ llama_cache_type_v }}"
+{% if llama_flash_attention %}
+      - "-fa"
+      - "on"
+{% endif %}
+{% if llama_use_jinja %}
+      - "--jinja"
+{% endif %}
+{% if llama_no_context_shift %}
+      - "--no-context-shift"
+{% endif %}
+{% if llama_chat_template_file | length > 0 %}
+      - "--chat-template-file"
+      - "/templates/{{ llama_chat_template_file }}"
+{% endif %}
+      - "--temp"
+      - "{{ llama_temperature }}"
+      - "--top-p"
+      - "{{ llama_top_p }}"
+      - "--top-k"
+      - "{{ llama_top_k }}"
+      - "--min-p"
+      - "{{ llama_min_p }}"
+      - "--presence-penalty"
+      - "{{ llama_presence_penalty }}"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities:
+                - gpu

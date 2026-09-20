@@ -26,6 +26,14 @@ minecraft_bedrock_image: "itzg/minecraft-bedrock-server"
 minecraft_bedrock_version: "2026.3.1"
 minecraft_bedrock_package_version: "LATEST"
 
+# Pinned by digest, not by tag. server-cuda is a rolling tag, and CUDA builds of
+# llama.cpp below ece963f4 (~b10450) emit clean-looking garbage from some
+# architectures on compute capability 8.6 - reproduced on WSL with an RTX 3090,
+# and silent when it happens. This digest is build 11046, commit 60081bb2b,
+# confirmed working on the lab GPU on 2026-09-20.
+llama_image: "ghcr.io/ggml-org/llama.cpp"
+llama_version: "server-cuda@sha256:131a7be5d90d6df75f32ffad405d71e354e9bdba806264b6a905339283925b85"
+
 registry_image: "registry"
 registry_version: "2"
 

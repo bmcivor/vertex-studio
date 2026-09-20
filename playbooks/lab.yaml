@@ -14,8 +14,8 @@
 - name: Deploy Stable Diffusion WebUI
   ansible.builtin.import_playbook: stable-diffusion.yaml
 
-- name: Install Ollama LLM
-  ansible.builtin.import_playbook: ollama.yaml
+- name: Serve a local coding model on the GPU
+  ansible.builtin.import_playbook: llama.yaml
 
 - name: Deploy Taiga
   ansible.builtin.import_playbook: taiga.yaml
