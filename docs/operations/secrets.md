@@ -73,6 +73,10 @@ playbook runs, so **changing the vault alone has no effect** — the playbook ha
 |----------|---------|
 | `github_pat` | Jenkins, to index repositories and manage webhooks |
 | `jenkins_admin_password` | The Jenkins admin account, via JCasC |
+| `taiga_postgres_password` | Taiga's Postgres user (taiga-db, taiga-back) |
+| `taiga_rabbitmq_password` | Taiga's RabbitMQ user (events and async brokers) |
+| `taiga_rabbitmq_erlang_cookie` | The Erlang cookie shared by Taiga's RabbitMQ nodes |
+| `taiga_secret_key` | Django `SECRET_KEY` for taiga-back |
 
-Both are rendered into `/opt/jenkins/.env` at mode `0600`. Neither is readable from a
-playbook run's output.
+`github_pat` and `jenkins_admin_password` are rendered into `/opt/jenkins/.env`, the `taiga_*`
+values into `/opt/taiga/.env`, all at mode `0600`. None is printed in a playbook run's output.
