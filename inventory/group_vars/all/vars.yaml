@@ -22,6 +22,7 @@ jenkins_repos:
   - vertex-studio
   - glazr
   - vertex-code
+  - visa-application
 
 minecraft_bedrock_image: "itzg/minecraft-bedrock-server"
 minecraft_bedrock_version: "2026.3.1"
