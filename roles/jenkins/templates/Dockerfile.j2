@@ -2,6 +2,10 @@ FROM {{ jenkins_image }}:{{ jenkins_version }}
 
 USER root
 
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends make && \
+    rm -rf /var/lib/apt/lists/*
+
 COPY --from=docker:cli /usr/local/bin/docker /usr/local/bin/docker
 
 ARG COMPOSE_VERSION={{ docker_compose_version }}
